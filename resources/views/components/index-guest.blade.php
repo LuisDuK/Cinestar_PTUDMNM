@@ -57,39 +57,42 @@
                 <div class="user-actions">
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
-                            <?php  if (isset($_SESSION['maTaiKhoan'])): ?>
+                            @if (Auth::check())
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                                Xin chào, <?php echo htmlspecialchars($_SESSION['hoTen']); ?>
+                                {{ __('Xin chào') }}, {{ Auth::user()->name }}
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown"
                                 style="background: linear-gradient(to left, #131921, #49136b);">
                                 <li>
-                                    <a class="dropdown-item" style="color:white;"
-                                        href="index.php?action=thongtincanhan">
-                                        Thông tin cá nhân
+                                    <a class="dropdown-item" style="color:white;" href="{{ url('/profile') }}">
+                                        {{ __('Thông tin cá nhân') }}
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" style="color:white;" href="index.php?action=giohang">
-                                        Giỏ hàng
+                                    <a class="dropdown-item" style="color:white;" href="{{ url('/cart') }}">
+                                        {{ __('Lịch sử giao dịch') }}
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" style="color:white;" href="index.php?action=dangxuat">
-                                        Đăng xuất
-                                    </a>
+                                    <form action="{{ url('/logout') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item" style="color:white;">
+                                            {{ __('Đăng xuất') }}
+                                        </button>
+                                    </form>
                                 </li>
                             </ul>
-                            <?php else: ?>
-                            <a href="index.php?action=dangnhap" class="user-login">
-                                <img src="{{ asset('Resources/Images/DefaultPage/ic-header-auth.svg')  }}"
+                            @else
+                            <a href="{{ url('/auth') }}" class="user-login">
+                                <img src="{{ asset('Resources/Images/DefaultPage/ic-header-auth.svg') }}"
                                     alt="Cinestar Logo" style="width: 30px; height: 30px; margin-bottom: 2px" />
-                                <b>Đăng nhập</b>
+                                <b>{{ __('Đăng nhập') }}</b>
                             </a>
-                            <?php endif; ?>
+                            @endif
                         </li>
                     </ul>
+
 
 
 
@@ -260,5 +263,7 @@
     </div>
 
 </body>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </html>

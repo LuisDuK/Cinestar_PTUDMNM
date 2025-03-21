@@ -52,6 +52,14 @@ class LoginRequest extends FormRequest
                 'email' => trans('auth.failed'),
             ]);
         }
+        $user = Auth::user();
+        if ($user->account_type != 0) {
+            // Đăng xuất ngay nếu account_type không hợp lệ
+            Auth::logout();
+            throw ValidationException::withMessages([
+                'email' => trans('auth.unauthorized'), // Create a new translation key for this
+            ]);
+        }
 
         RateLimiter::clear($this->throttleKey());
     }

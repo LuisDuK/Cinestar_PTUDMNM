@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+/*Guest*/
 Route::get('/homeindex','App\Http\Controllers\HomeController@index')->name('homeindex');
 Route::get('/phim/dang-chieu', 'App\Http\Controllers\HomeController@movieshowing')->name('phimdangchieu');
 Route::get('/phim/sap-chieu', 'App\Http\Controllers\HomeController@movieupcoming')->name('phimsapchieu');
@@ -33,4 +34,17 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+Route::get('/auth', 'App\Http\Controllers\AuthController@viewauth')->name('auth');;
+
+// Trả về nội dung form đăng nhập
+Route::get('/auth/login', function () {
+    return view('auth.login_content');
+})->name('authlogin');;
+
+// Trả về nội dung form đăng ký
+Route::get('/auth/register', function () {
+    return view('auth.register_content');
+})->name('authregister');;
+
 require __DIR__.'/auth.php';
+/*--Guest---*/
