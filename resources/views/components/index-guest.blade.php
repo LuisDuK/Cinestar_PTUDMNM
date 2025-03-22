@@ -124,10 +124,10 @@
                     </a>
                 </nav>
                 <nav class="extra-nav">
-                    <a href="index.php?action=khuyenmai" class="extra-item">Khuyến mãi</a>
-                    <a href="index.php?action=thuesukien" class="extra-item">Thuê sự kiện</a>
-                    <a href="index.php?action=tatcahinhthucgiaitri" class="extra-item">Tất cả các giải trí</a>
-                    <a href="index.php?action=gioithieu" class="extra-item">Giới thiệu</a>
+                    <a href="{{ route('khuyenmai') }}" class="extra-item">Khuyến mãi</a>
+                    <a href="{{ route('tochucsukien') }}" class="extra-item">Thuê sự kiện</a>
+                    <a href="{{ route('giaitri') }}" class="extra-item">Tất cả các giải trí</a>
+                    <a href="{{ route('gioithieu') }}" class="extra-item">Giới thiệu</a>
                 </nav>
             </div>
         </header>

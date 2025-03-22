@@ -1,10 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Guest;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\BookingConfirmation;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Encoding\Encoding;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Controller;
 
 class BookingTicketController extends Controller
 { 
@@ -92,41 +100,57 @@ class BookingTicketController extends Controller
         return response()->json(['bookedSeats' => $seats]);
     }
     public function bookTicket(Request $request)
-    {
-        try {
-            DB::beginTransaction();
+{
+    try {
+        DB::beginTransaction();
 
-            $seats_booked = $request->input('seats_booked');
-            $total_amount = $request->input('total_amount');
-            $payment_method = $request->input('payment_method');
-            $showtime_id = $request->input('showtime_id');
+        $seats_booked = $request->input('seats_booked');
+        $total_amount = $request->input('total_amount');
+        $payment_method = $request->input('payment_method');
+        $showtime_id = $request->input('showtime_id');
 
-            $customer_id = Auth::id(); 
+        $customer = Auth::user(); 
+        $customer_email = $customer->email;
 
-            // Bước 2: Lưu đơn hàng vào bảng donhangonline
-            $order_id = DB::table('donhangonline')->insertGetId([
-                'maKH' => $customer_id,
-                'ngayDat' => now(),
-                'tongTien' => $total_amount,
-                'phuongThucThanhToan' => $payment_method,
-                'trangThai' => 'Đã hoàn tất',
-            ]);
+        // Lưu đơn hàng vào bảng donhangonline
+        $order_id = DB::table('donhangonline')->insertGetId([
+            'maKH' => $customer->id,
+            'ngayDat' => now(),
+            'tongTien' => $total_amount,
+            'phuongThucThanhToan' => $payment_method,
+            'trangThai' => 'Đã hoàn tất',
+        ]);
 
-            // Bước 3: Lưu chi tiết vé vào bảng chitietdatve
-            DB::table('chitietdatve')->insert([
-                'so_tien' => $total_amount,
-                'ngay_phat_hanh' => now(),
-                'danh_sach_ghes_da_dat' => $seats_booked,
-                'id_lich_chieu' => $showtime_id,
-                'id_don_hang' => $order_id,
-            ]);
+        // Lưu chi tiết vé vào bảng chitietdatve
+        DB::table('chitietdatve')->insert([
+            'so_tien' => $total_amount,
+            'ngay_phat_hanh' => now(),
+            'danh_sach_ghes_da_dat' => $seats_booked,
+            'id_lich_chieu' => $showtime_id,
+            'id_don_hang' => $order_id,
+        ]);
 
-            DB::commit();
+        DB::commit();
 
-            return response()->json(['status' => 'success', 'order_id' => $order_id]);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json(['status' => 'error', 'message' => 'Đã xảy ra lỗi: ' . $e->getMessage()], 500);
-        }
+        
+        // Chuẩn bị dữ liệu gửi email
+        $orderDetails = [
+            'customer_name' => $customer->name,
+            'order_id' => $order_id,
+            'order_date' => now()->format('d/m/Y H:i'),
+            'total_amount' => $total_amount,
+            'seats_booked' => $seats_booked,
+            'payment_method' => $payment_method,
+        ];
+        //dd($orderDetails['qrCode']);
+        // Gửi email
+        Mail::to($customer_email)->send(new BookingConfirmation($orderDetails));
+
+        return response()->json(['status' => 'success', 'order_id' => $order_id]);
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return response()->json(['status' => 'error', 'message' => 'Đã xảy ra lỗi: ' . $e->getMessage()], 500);
     }
+}
 }

@@ -234,7 +234,7 @@
 
             $.ajax({
                 url: '{{ route("payment") }}',
-                type: 'POST',
+                type: 'GET',
                 data: formData,
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -243,12 +243,13 @@
                 success: function(response) {
                     if (response.status === 'success') {
                         alert('Thanh toán thành công!');
-                        window.location.href = '{{ route("order.details") }}?order_id=' +
-                            response.order_id;
+                        window.location.href = '{{ route("ticket.detail", ":order_id") }}'
+                            .replace(':order_id', response.order_id);
                     } else {
                         alert('Đã xảy ra lỗi, vui lòng thử lại.');
                     }
                 },
+
                 error: function() {
                     alert('Lỗi khi gửi thông tin thanh toán.');
                 }
