@@ -53,15 +53,25 @@ class LoginRequest extends FormRequest
             ]);
         }
         $user = Auth::user();
-        if ($user->account_type != 0) {
-            // Đăng xuất ngay nếu account_type không hợp lệ
+        if (request()->is('auth') && $user->account_type != 0) {
+            // Nếu truy cập /auth nhưng không phải account_type = 0 -> Đăng xuất
             Auth::logout();
             throw ValidationException::withMessages([
-                'email' => trans('auth.unauthorized'), // Create a new translation key for this
+                'email' => trans('auth.unauthorized'),
             ]);
         }
+        
+        if (request()->is('adminhome') && $user->account_type != 1) {
+            // Nếu truy cập /adminhome nhưng không phải account_type = 1 -> Đăng xuất
+            Auth::logout();
+            throw ValidationException::withMessages([
+                'email' => trans('auth.unauthorized'),
+            ]);
+        }
+        
 
         RateLimiter::clear($this->throttleKey());
+        
     }
 
     /**

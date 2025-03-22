@@ -70,7 +70,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" style="color:white;" href="{{ url('/cart') }}">
+                                    <a class="dropdown-item" style="color:white;" href="{{ route('transhistory') }}">
                                         {{ __('Lịch sử giao dịch') }}
                                     </a>
                                 </li>

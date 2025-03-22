@@ -26,6 +26,12 @@
                 $('#tab-login').addClass('active');
                 $('#tab-register').removeClass('active');
             });
+            $('#switch-login-btn').on('click', function(e) {
+                e.preventDefault();
+                $('#dangnhap').load("{{ route('authlogin') }}");
+                $('#tab-login').addClass('active');
+                $('#tab-register').removeClass('active');
+            });
 
             // Xử lý sự kiện khi click vào Đăng ký
             $('#register-btn').on('click', function(e) {

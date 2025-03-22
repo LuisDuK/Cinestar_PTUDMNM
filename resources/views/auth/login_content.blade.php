@@ -1,7 +1,5 @@
-<x-auth-session-status class="mb-4" :status="session('status')" />
-
 <!-- Validation Errors -->
-<x-auth-validation-errors class="mb-4" :errors="$errors" />
+
 <div class="form-container" id="login-form" style="color: black;">
     <form action="{{ route('login') }}" method="POST">
         @csrf
@@ -25,3 +23,5 @@
         <button class="btn-dangnhap" type="submit">ĐĂNG NHẬP</button>
     </form>
 </div>
+<x-auth-session-status class="mb-4" :status="session('status')" />
+<x-auth-validation-errors class="mb-4" :errors="$errors" />

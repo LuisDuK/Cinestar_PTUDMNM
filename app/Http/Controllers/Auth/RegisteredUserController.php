@@ -20,7 +20,7 @@ class RegisteredUserController extends Controller
      */
     public function create()
     {
-        return view('auth.register');
+       // return view('auth.register');
     }
 
     /**
@@ -33,22 +33,41 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
+        // Xác thực dữ liệu đầu vào
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'dob' => ['required', 'date'],
+            'gender' => ['required', 'in:male,female,other'],
+            'phone' => ['required', 'string', 'max:20', 'unique:users,phone'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
-
+        try{
+        // Tạo người dùng mới
         $user = User::create([
             'name' => $request->name,
+            'dob' => $request->dob,
+            'gender' => $request->gender,
+            'phone' => $request->phone,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-
+        
+        // Gửi sự kiện đăng ký
         event(new Registered($user));
 
+        // Đăng nhập sau khi đăng ký thành công
         Auth::login($user);
-
-        return redirect(RouteServiceProvider::HOME);
+        
+        // Chuyển hướng về trang chủ
+        if ($user->account_type == 0) {
+            return redirect('/homeindex'); 
+        } else {
+            return redirect('/adminhome'); 
+        }
+    }
+        catch (\Exception $e){
+            return redirect()->back()->with('error', 'Đăng ký thất bại. Vui lòng thử lại!');
+        }
     }
 }

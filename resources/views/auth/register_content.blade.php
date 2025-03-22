@@ -1,4 +1,3 @@
-<x-auth-validation-errors class="mb-4" :errors="$errors" />
 <div class="form-container" id="register-form" style="color: black;">
     <form action="{{ url('/register') }}" method="POST">
         @csrf
@@ -23,11 +22,6 @@
                 <input type="radio" id="other" name="gender" value="other" required />
 
             </div>
-        </div>
-
-        <div class="form-group">
-            <label for="address">{{ __('Địa chỉ') }} <span>*</span></label>
-            <input type="text" id="address" name="address" placeholder="{{ __('Nhập địa chỉ') }}" required></input>
         </div>
 
         <div class="form-group">
@@ -58,6 +52,9 @@
         </div>
 
         <button class="btn-dangnhap" type="submit">{{ __('ĐĂNG KÝ') }}</button>
-        <p>{{ __('Bạn đã có tài khoản?') }} <a href="#" id="switch-to-login">{{ __('Đăng nhập') }}</a></p>
+        <p>{{ __('Bạn đã có tài khoản?') }} <button id="switch-login-btn" style="all: unset;
+    cursor: pointer; "><a href="#">{{ __('Đăng nhập') }}</a></button></p>
     </form>
+
+    <x-auth-validation-errors class="mb-4" :errors="$errors" />
 </div>

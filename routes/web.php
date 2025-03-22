@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
@@ -26,6 +26,11 @@ Route::get('/dat-ghe/{maLichChieuPhim}', 'App\Http\Controllers\BookingticketCont
 Route::get('/get-ngay-chieu/{maPhim}', 'App\Http\Controllers\HomeController@getNgayChieu');
 Route::get('/get-suat-chieu/{maPhim}/{ngayChieu}', 'App\Http\Controllers\HomeController@getSuatChieu');
 Route::get('/get-ma-lich-chieu-phim/{maPhim}/{ngayChieu}/{gioBatDau}', 'App\Http\Controllers\HomeController@getMaLichChieuPhim');
+Route::get('/get-booked-seats', 'App\Http\Controllers\BookingTicketController@getBookedSeats')->name('bookedseats');
+Route::get('/payment', 'App\Http\Controllers\BookingTicketController@getBookedSeats')->name('payment');
+Route::get('/transhistory', 'App\Http\Controllers\TransHistoryController@showall')->name('transhistory');
+Route::get('/transtable', 'App\Http\Controllers\TransHistoryController@get_table')->name('get.trans.table');
+Route::get('/ticket.detail/{maDonHang}', 'App\Http\Controllers\TransHistoryController@showticket')->name('ticket.detail');
 Route::get('/', function () {
     return view('welcome');
 });
@@ -45,6 +50,9 @@ Route::get('/auth/login', function () {
 Route::get('/auth/register', function () {
     return view('auth.register_content');
 })->name('authregister');;
+Route::get('/login', function () {
+    abort(404); 
+})->name('login');
 
 require __DIR__.'/auth.php';
 /*--Guest---*/
