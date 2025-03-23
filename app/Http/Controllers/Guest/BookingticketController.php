@@ -7,11 +7,6 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\BookingConfirmation;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use Endroid\QrCode\Builder\Builder;
-use Endroid\QrCode\Writer\PngWriter;
-use Endroid\QrCode\Encoding\Encoding;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 
 class BookingTicketController extends Controller
@@ -99,15 +94,60 @@ class BookingTicketController extends Controller
 
         return response()->json(['bookedSeats' => $seats]);
     }
-    public function bookTicket(Request $request)
+    public function updateCart(Request $request)
+    {
+        // Lấy dữ liệu từ request, lưu ý rằng dữ liệu sẽ nằm trong 'cart'
+        $cartData = $request->input('cart');
+    
+        // Kiểm tra nếu có dữ liệu trong cart
+        if (!$cartData) {
+            return response()->json(['success' => false, 'message' => 'Dữ liệu giỏ hàng không hợp lệ.'], 400);
+        }
+    
+        // Lấy các giá trị từ cartData
+        $selectedSeats = $cartData['seats'];  // Danh sách ghế đã chọn
+        $ticketPrice = $cartData['ticketPrice']; // Giá vé cho mỗi ghế
+        $movieTitle = $cartData['movieTitle'];   // Tên phim
+        $showtimeId = $cartData['showtimeId'];   // ID của lịch chiếu
+        $totalPrice = $cartData['totalPrice'];   // Tổng số tiền
+        if (isset($cartData['paymentMethod'])) {
+            $paymentMethod = $cartData['paymentMethod'];
+        } else {
+           
+            $paymentMethod = 'VNPAY'; 
+        }
+        // Kiểm tra nếu thiếu dữ liệu quan trọng
+        if (!$selectedSeats || !$ticketPrice || !$movieTitle || !$showtimeId) {
+            return response()->json(['success' => false, 'message' => 'Dữ liệu giỏ hàng không hợp lệ.'], 400);
+        }
+    
+        // Lưu trữ giỏ hàng vào session
+        session(['cart' => [
+            'seats' => $selectedSeats, 
+            'totalPrice' => $totalPrice, 
+            'movieTitle' => $movieTitle, 
+            'showtimeId' => $showtimeId,
+            'ticketPrice' => $ticketPrice,
+            'paymentMethod'=> $paymentMethod
+        ]]);
+    
+        // Trả về phản hồi thành công
+        return response()->json(['success' => true, 'cart' => session('cart')]);
+    }
+    
+public function bookTicket()
 {
     try {
         DB::beginTransaction();
 
-        $seats_booked = $request->input('seats_booked');
-        $total_amount = $request->input('total_amount');
-        $payment_method = $request->input('payment_method');
-        $showtime_id = $request->input('showtime_id');
+        // Lấy thông tin giỏ hàng từ session
+        $cart = session('cart');
+        
+        // Lấy các giá trị từ giỏ hàng
+        $seats_booked = $cart['seats']; // Danh sách ghế đã đặt
+        $total_amount = $cart['totalPrice']; // Tổng số tiền
+        $payment_method = $cart['payment_method']; // Phương thức thanh toán
+        $showtime_id = $cart['showtimeId']; // ID lịch chiếu
 
         $customer = Auth::user(); 
         $customer_email = $customer->email;
@@ -125,14 +165,13 @@ class BookingTicketController extends Controller
         DB::table('chitietdatve')->insert([
             'so_tien' => $total_amount,
             'ngay_phat_hanh' => now(),
-            'danh_sach_ghes_da_dat' => $seats_booked,
+            'danh_sach_ghes_da_dat' => implode(',', $seats_booked), // Nối các ghế đã đặt thành chuỗi, cách nhau bởi dấu phẩy
             'id_lich_chieu' => $showtime_id,
             'id_don_hang' => $order_id,
         ]);
 
         DB::commit();
 
-        
         // Chuẩn bị dữ liệu gửi email
         $orderDetails = [
             'customer_name' => $customer->name,
@@ -142,10 +181,14 @@ class BookingTicketController extends Controller
             'seats_booked' => $seats_booked,
             'payment_method' => $payment_method,
         ];
-        //dd($orderDetails['qrCode']);
-        // Gửi email
+
+        // Xóa dữ liệu giỏ hàng sau khi hoàn tất thanh toán
+        session()->forget('cart');
+
+        // Gửi email xác nhận
         Mail::to($customer_email)->send(new BookingConfirmation($orderDetails));
 
+        // Trả về phản hồi thành công
         return response()->json(['status' => 'success', 'order_id' => $order_id]);
 
     } catch (\Exception $e) {
@@ -153,4 +196,5 @@ class BookingTicketController extends Controller
         return response()->json(['status' => 'error', 'message' => 'Đã xảy ra lỗi: ' . $e->getMessage()], 500);
     }
 }
+
 }

@@ -3,6 +3,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use App\Http\Controllers\MoMoController;
+use App\Http\Controllers\PayPalController;
 
 
 /*
@@ -37,6 +39,7 @@ Route::get('/get-ngay-chieu/{maPhim}', 'App\Http\Controllers\Guest\HomeControlle
 Route::get('/get-suat-chieu/{maPhim}/{ngayChieu}', 'App\Http\Controllers\Guest\HomeController@getSuatChieu');
 Route::get('/get-ma-lich-chieu-phim/{maPhim}/{ngayChieu}/{gioBatDau}', 'App\Http\Controllers\Guest\HomeController@getMaLichChieuPhim');
 Route::get('/get-booked-seats', 'App\Http\Controllers\Guest\BookingTicketController@getBookedSeats')->name('bookedseats');
+Route::POST('/update-cart', 'App\Http\Controllers\Guest\BookingTicketController@updatecart')->name('update.cart');
 Route::get('/payment', 'App\Http\Controllers\Guest\BookingTicketController@bookTicket')->name('payment');
 Route::get('/transhistory', 'App\Http\Controllers\Guest\TransHistoryController@showall')->name('transhistory');
 Route::get('/transtable', 'App\Http\Controllers\Guest\TransHistoryController@get_table')->name('get.trans.table');
@@ -79,6 +82,23 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back()->with('message', 'Liên kết xác thực đã được gửi!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 /*----*/
+
+
+Route::post('/vnpay/payment','App\Http\Controllers\VNPayController@createPayment')->name('vnpay.payment');
+Route::get('/vnpay/callback', 'App\Http\Controllers\VNPayController@paymentCallback')->name('vnpay.callback');
+
+
+
+Route::post('/momo/payment', [MoMoController::class, 'createPayment'])->name('momo.payment');
+Route::get('/momo/callback', [MoMoController::class, 'paymentCallback'])->name('momo.callback');
+
+Route::post('/paypal/payment', [PayPalController::class, 'createPayment'])->name('paypal.payment');
+Route::get('/paypal/success', [PayPalController::class, 'successPayment'])->name('paypal.success');
+Route::get('/paypal/cancel', [PayPalController::class, 'cancelPayment'])->name('paypal.cancel');
+
+Route::get('/checkout', function () {
+    return view('checkout');
+})->name('checkout');
 
 require __DIR__.'/auth.php';
 /*--Guest---*/

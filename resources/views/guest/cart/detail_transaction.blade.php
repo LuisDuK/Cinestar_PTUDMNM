@@ -2,6 +2,17 @@
     <x-slot name="title">
         Lịch sử giao dịch
     </x-slot>
+    @if(session('success'))
+    <script>
+    alert("{{ session('success') }}");
+    </script>
+    @endif
+
+    @if(session('error'))
+    <script>
+    alert("{{ session('error') }}");
+    </script>
+    @endif
     <div class="chitietdonhang" style="background:white; padding-left:50px; padding-top:20px; padding-bottom:40px;">
         <h2>Thông tin đơn hàng</h2>
         <div style="display: flex; justify-content: space-between;">

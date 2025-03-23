@@ -63,20 +63,30 @@
                     <input type="hidden" name="phone_number" value="{{ $user['soDienThoai'] ?? '' }}" readonly>
                     <input type="hidden" name="email" value="{{ $user['email'] ?? '' }}" readonly>
                     <div id="show-payment">
-                        <div id="payment-method">
-                            <label>Phương thức thanh toán:</label>
-                            <div>
-                                <input type="radio" id="momo" name="payment_method" value="momo" required>
-                                <label for="momo">Quét mã MoMo</label>
+                        <form method="POST" id="payment-form" action="">
+                            @csrf
+                            <div id="payment-method">
+
+                                <label>Phương thức thanh toán:</label>
+                                <div>
+                                    <input type="radio" id="momo" name="payment_method" value="momo" required>
+                                    <label for="momo">Thanh toán MoMo</label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="vnpay" name="payment_method" value="vnpay" required>
+                                    <label for="vnpay">Thanh toán VNPAY</label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="vnpay" name="payment_method" value="vnpay" required>
+                                    <label for="vnpay">Thanh toán PayPal</label>
+                                </div>
                             </div>
-                            <div>
-                                <input type="radio" id="bank" name="payment_method" value="bank" required>
-                                <label for="bank">Quét mã ngân hàng</label>
+
+                            <div id="btn">
+                                <!--<button type="submit" id="checkout-button">THANH TOÁN</button>-->
+                                <button type="submit" class="btn btn-success">THANH TOÁN</button>
                             </div>
-                        </div>
-                        <div id="btn">
-                            <button type="submit" id="checkout-button">THANH TOÁN</button>
-                        </div>
+                        </form>
                     </div>
                 </div>
                 @else
@@ -92,31 +102,6 @@
             </div>
         </div>
     </div>
-    <div id="modal-payment" class="modal-payment">
-        <div class="modal-content">
-            <div style="display:flow;">
-                <h3 style="float:left">Thanh toán</h3>
-                <span class="close" id="close-modal" style="float:right;">&times;</span>
-                <br style="clear:both;">
-            </div>
-            <div>
-                <p><strong>Phim: </strong><span id="modal-title"></span></p>
-                <p><strong>Lịch chiếu: </strong><span id="modal-showtime"></span></p>
-                <p><strong>Tổng tiền: </strong><span id="modal-total-price"></span></p>
-
-                <div id="qr-code" style="text-align:center;">
-                    <img src="{{ asset('Resources/Images/DefaultPage/QR.jpg') }}" alt="Mã QR Thanh Toán">
-                    <p><strong>Mã QR đã được tạo!</strong></p>
-                </div>
-
-                <form id="confirm-payment-form" style="text-align:center;">
-                    <button type="submit" id="confirm-payment-ve" class="confirm-pay">Xác nhận thanh toán</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-
 
     <script>
     console.log("Before ready function");
@@ -134,26 +119,6 @@
         document.getElementById('show-payment').style.opacity = '0';
     }
 
-    function startCountdown(duration) {
-        console.log("Countdown started with duration:", duration);
-        var countdownTimer = duration;
-        var countdownElement = $('<p id="countdown-timer" style="font-weight: bold; color: red;"></p>');
-        $('#qr-code').append(countdownElement);
-
-        var interval = setInterval(function() {
-            var minutes = Math.floor(countdownTimer / 60);
-            var seconds = countdownTimer % 60;
-            countdownElement.text(`Thời gian còn lại: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`);
-            countdownTimer--;
-
-            if (countdownTimer < 0) {
-                clearInterval(interval);
-                countdownElement.text('Mã QR đã hết hạn. Vui lòng đặt lại vé.');
-                $('#qr-code img').remove();
-            }
-        }, 1000);
-    }
-
     $(document).ready(function() {
         console.log("Document is ready!");
         var selectedSeats = [];
@@ -161,7 +126,7 @@
         var ticketPrice = movieData.ticket_price ?? 0;
         var showtimeId = movieData.showtimeId ?? 0;
         var totalPrice = 0;
-
+        var selectedPaymentMethod = "VNPAY";
 
         $.ajax({
             url: '{{ route("bookedseats") }}',
@@ -184,76 +149,97 @@
         });
 
         $(document).on('click', 'table tr td div', function() {
-            console.log("Ghế được nhấn:", $(this).attr('id'));
             var seatId = $(this).attr('id');
+
+            // Kiểm tra xem ghế đã được đặt chưa
             if ($(this).hasClass('sold')) {
                 alert('Ghế đã được đặt!');
                 return;
             }
-            $(this).toggleClass('activeseat');
-            selectedSeats = $(this).hasClass('activeseat') ? [...selectedSeats, seatId] : selectedSeats
-                .filter(seat => seat !== seatId);
-            totalPrice = selectedSeats.length * ticketPrice;
-            $('#selected-seat').text(selectedSeats.join(", "));
-            $('#total-price').text(totalPrice);
-            selectedSeats.length > 0 ? showOnBtn() : hideOnBtn();
-        });
 
-        $('#checkout-button').click(function(e) {
-            e.preventDefault();
-            var paymentMethod = $("input[name='payment_method']:checked").val();
-            if (!paymentMethod) {
-                alert('Vui lòng chọn phương thức thanh toán!');
-                return;
+            // Thêm hoặc xóa ghế khỏi giỏ hàng
+            $(this).toggleClass('activeseat');
+            var seatIndex = selectedSeats.indexOf(seatId);
+
+            if ($(this).hasClass('activeseat')) {
+                if (seatIndex === -1) {
+                    selectedSeats.push(seatId); // Thêm ghế vào giỏ
+                }
+            } else {
+                if (seatIndex !== -1) {
+                    selectedSeats.splice(seatIndex, 1); // Xóa ghế khỏi giỏ
+                }
             }
 
-            var movieTitle = $('#title').text(); // ID của phần hiển thị tên phim
-            var showtimeInfo = $('#schedule').text(); // ID của phần hiển thị lịch chiếu
-
-            $('#modal-title').text(movieTitle);
-            $('#modal-showtime').text(showtimeInfo);
-
-            $('#modal-total-price').text(totalPrice);
-            $('#qr-code').empty();
-            startCountdown(5 * 60);
-            $('#modal-payment').show();
-        });
-
-        $('#close-modal').click(function() {
-            $('#modal-payment').hide();
-        });
-
-        $('#confirm-payment-form').click(function(e) {
-            e.preventDefault();
-            var formData = {
-                seats_booked: selectedSeats.join(','),
-                total_amount: totalPrice,
-                payment_method: $("input[name='payment_method']:checked").val(),
-                showtime_id: showtimeId
+            // Cập nhật thông tin giỏ hàng
+            var cartData = {
+                seats: selectedSeats,
+                totalPrice: selectedSeats.length * ticketPrice,
+                movieTitle: movieData.movie_title,
+                showtimeId: showtimeId,
+                ticketPrice: ticketPrice,
+                paymentMethod: selectedPaymentMethod
             };
-
+            console.log(cartData);
+            // Gửi giỏ hàng lên server
             $.ajax({
-                url: '{{ route("payment") }}',
-                type: 'GET',
-                data: formData,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                url: '{{ route("update.cart") }}', // route để lưu giỏ hàng
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    cart: cartData // Gửi tất cả thông tin giỏ hàng lên server
                 },
-                dataType: 'json',
                 success: function(response) {
-                    if (response.status === 'success') {
-                        alert('Thanh toán thành công!');
-                        window.location.href = '{{ route("ticket.detail", ":order_id") }}'
-                            .replace(':order_id', response.order_id);
-                    } else {
-                        alert('Đã xảy ra lỗi, vui lòng thử lại.');
-                    }
-                },
-
-                error: function() {
-                    alert('Lỗi khi gửi thông tin thanh toán.');
+                    console.log("Giỏ hàng đã được cập nhật", response);
                 }
             });
+
+            // Cập nhật thông tin hiển thị
+            $('#selected-seat').text(selectedSeats.join(", "));
+            $('#total-price').text(cartData.totalPrice);
+
+            // Hiển thị hoặc ẩn nút thanh toán
+            selectedSeats.length > 0 ? showOnBtn() : hideOnBtn();
+        });
+        document.getElementById('payment-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            let selectedPayment = document.querySelector('input[name="payment_method"]:checked').value;
+            if (selectedPayment === "momo") {
+                this.action = "{{ route('momo.payment') }}";
+            } else if (selectedPayment === "vnpay") {
+                this.action = "{{ route('vnpay.payment') }}";
+            } else if (selectedPayment === "paypal") {
+                this.action = "{{ route('paypal.payment') }}";
+            } else {
+                alert("Vui lòng chọn phương thức thanh toán");
+                return;
+            }
+            var selectedPaymentMethod = $('input[name="payment_method"]:checked').val();
+            var cartData = {
+                seats: selectedSeats,
+                totalPrice: selectedSeats.length * ticketPrice,
+                movieTitle: movieData.movie_title,
+                showtimeId: showtimeId,
+                ticketPrice: ticketPrice,
+                paymentMethod: selectedPaymentMethod // Thêm phương thức thanh toán vào giỏ hàng
+            };
+
+            // Gửi giỏ hàng lên server
+            $.ajax({
+                url: '{{ route("update.cart") }}', // route để lưu giỏ hàng
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    cart: cartData // Gửi tất cả thông tin giỏ hàng lên server
+                },
+                success: function(response) {
+                    console.log("Giỏ hàng đã được cập nhật", response);
+                    // Sau khi giỏ hàng đã được cập nhật, submit form
+                    this.submit();
+                }.bind(this)
+            });
+            this.submit();
         });
     });
     </script>

@@ -6,7 +6,6 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class BookingConfirmation extends Mailable
 {
@@ -18,12 +17,11 @@ class BookingConfirmation extends Mailable
      * @return void
      */
     public $orderDetails;
-    public $qrCode;
+
     public function __construct($orderDetails)
     {
         $this->orderDetails = $orderDetails;
 
-        $this->qrCode = QrCode::size(200)->generate($orderDetails['order_id']);
     }
 
     /**
@@ -37,7 +35,6 @@ class BookingConfirmation extends Mailable
                     ->view('mails.booksuccess')
                     ->with([
                         'orderDetails' => $this->orderDetails,
-                        'qrCode' => $this->qrCode
                     ]);
     }
 }
