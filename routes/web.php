@@ -1,6 +1,8 @@
 <?php
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
 
 /*
@@ -15,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 /*Guest*/
 Route::get('/homeindex','App\Http\Controllers\Guest\HomeController@index')->name('homeindex');
+
 Route::get('/phim/dang-chieu', 'App\Http\Controllers\Guest\HomeController@movieshowing')->name('phimdangchieu');
 Route::get('/phim/sap-chieu', 'App\Http\Controllers\Guest\HomeController@movieupcoming')->name('phimsapchieu');
 Route::get('/dat-ve/{maPhim}', 'App\Http\Controllers\Guest\HomeController@index')->name('datve');
@@ -50,16 +53,32 @@ Route::get('/auth', 'App\Http\Controllers\Guest\AuthController@viewauth')->name(
 
 // Trả về nội dung form đăng nhập
 Route::get('/auth/login', function () {
-    return view('auth.login_content');
+    return view('auth.Guest.login_content');
 })->name('authlogin');;
 
 // Trả về nội dung form đăng ký
 Route::get('/auth/register', function () {
-    return view('auth.register_content');
+    return view('auth.Guest.register_content');
 })->name('authregister');;
 Route::get('/login', function () {
     abort(404); 
 })->name('login');
+
+/*Xác thực email*/
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect('/homeindex');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+    return back()->with('message', 'Liên kết xác thực đã được gửi!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+/*----*/
 
 require __DIR__.'/auth.php';
 /*--Guest---*/

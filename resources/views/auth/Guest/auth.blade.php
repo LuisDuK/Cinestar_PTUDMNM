@@ -11,9 +11,13 @@
         </div>
 
         <div id="dangnhap">
-            @include('auth.login_content')
+            @include('auth.guest.login_content')
         </div>
-
+        @if(session('success'))
+        <script>
+        alert("{{ session('success') }}");
+        </script>
+        @endif
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
         $(document).ready(function() {

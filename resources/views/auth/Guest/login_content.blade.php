@@ -1,6 +1,6 @@
 <!-- Validation Errors -->
 
-<div class="form-container" id="login-form" style="color: black;">
+<div class="container" id="login-form" style="color: black; witdh:40%;">
     <form action="{{ route('login') }}" method="POST">
         @csrf
         <div class="form-group">
@@ -18,7 +18,7 @@
         </div>
 
         <div class="forgot-password">
-            <a href="#" id="forgot-password-btn">Quên mật khẩu?</a>
+            <a href="{{ route('password.request') }}" id="forgot-password-btn">Quên mật khẩu?</a>
         </div>
         <button class="btn-dangnhap" type="submit">ĐĂNG NHẬP</button>
     </form>

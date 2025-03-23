@@ -11,6 +11,6 @@ class AuthController extends Controller
 { 
   public function viewauth(){
     $phimDangChieu = DB::table("Phim")->where('trangThai', 'Đang chiếu')->get();
-    return view('auth.auth',compact('phimDangChieu'));
+    return view('auth.guest.auth',compact('phimDangChieu'));
   }
 }

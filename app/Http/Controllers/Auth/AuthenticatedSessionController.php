@@ -54,7 +54,7 @@ class AuthenticatedSessionController extends Controller
     public function destroy(Request $request)
     {
         $user = Auth::user(); // Lấy thông tin user trước khi đăng xuất
-        $redirectRoute = '/'; // Mặc định về trang chủ
+        $redirectRoute = '/homeindex'; // Mặc định về trang chủ
     
         if ($user) {
             if ($user->account_type == 0) {

@@ -1,39 +1,32 @@
-<x-guest-layout>
-    <x-auth-card>
-        <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
-        </x-slot>
-
-        <div class="mb-4 text-sm text-gray-600">
-            {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
-        </div>
+<x-index-guest>
+    <x-slot name="title">Xác thực emails</x-slot>
+    <div class="container" style="width: 40%; margin:100px; margin-left:400px;">
+        <p class=" text-gray-700">
+            {{ __('Cảm ơn bạn đã đăng ký! Hãy xác minh địa chỉ email của bạn bằng cách nhấp vào liên kết trong email. Nếu chưa nhận được, bạn có thể yêu cầu gửi lại.') }}
+        </p>
 
         @if (session('status') == 'verification-link-sent')
-            <div class="mb-4 font-medium text-sm text-green-600">
-                {{ __('A new verification link has been sent to the email address you provided during registration.') }}
-            </div>
+        <div class="mt-2 p-2 text-green-700 bg-green-100 border border-green-400 rounded-md text-center w-full">
+            {{ __('Một liên kết xác minh mới đã được gửi đến email của bạn.') }}
+        </div>
         @endif
 
-        <div class="mt-4 flex items-center justify-between">
+        <div style="display:flex; ">
             <form method="POST" action="{{ route('verification.send') }}">
                 @csrf
-
-                <div>
-                    <x-button>
-                        {{ __('Resend Verification Email') }}
-                    </x-button>
-                </div>
+                <button style="margin-right:260px; " class="btn btn-success">
+                    {{ __('Gửi lại email') }}
+                </button>
             </form>
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-
-                <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900">
-                    {{ __('Log Out') }}
+                <button class="btn btn-warning">
+                    {{ __('Đăng xuất') }}
                 </button>
             </form>
         </div>
-    </x-auth-card>
-</x-guest-layout>
+    </div>
+
+
+</x-index-guest>
