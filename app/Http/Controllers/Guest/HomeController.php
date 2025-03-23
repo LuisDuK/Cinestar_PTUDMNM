@@ -10,8 +10,8 @@ use App\Http\Controllers\Controller;
 class HomeController extends Controller
 { 
     public function index() {
-        $phimDangChieu = DB::table("Phim")->where('trangThai', 'Đang chiếu')->limit(3)->get();
-        $phimSapChieu = DB::table("Phim")->where('trangThai', 'Sắp chiếu')->limit(3)->get();
+        $phimDangChieu = DB::table("Phim")->where('trangThai', 'Đang chiếu')->get();
+        $phimSapChieu = DB::table("Phim")->where('trangThai', 'Sắp chiếu')->get();
         return view('guest.home', compact('phimDangChieu', 'phimSapChieu'));
     }
     public function movieshowing(){
@@ -54,15 +54,22 @@ class HomeController extends Controller
 
         return response()->json($suatChieu);
     }
-    public function getMaLichChieuPhim($maPhim, $ngayChieu, $gioBatDau)
+    public function getMaLichChieuPhim(Request $request)
     {
-        // Truy vấn database để lấy maLichChieuPhim
+        $maPhim = $request->query('maPhim');
+        $ngayChieu = $request->query('ngayChieu');
+        $gioBatDau = $request->query('gioBatDau');
+    
+        if (!$maPhim || !$ngayChieu || !$gioBatDau) {
+            return response()->json(['error' => 'Thiếu dữ liệu'], 400);
+        }
+    
         $maLichChieuPhim = DB::table('lichchieuphim')
             ->where('maPhim', $maPhim)
             ->where('ngayChieu', $ngayChieu)
             ->where('gioBatDau', $gioBatDau)
             ->value('maLichChieuPhim');
-
+    
         if ($maLichChieuPhim) {
             return response()->json(['maLichChieuPhim' => $maLichChieuPhim]);
         } else {

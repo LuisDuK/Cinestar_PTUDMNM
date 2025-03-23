@@ -59,7 +59,9 @@
     <div class="phim-dang-chieu">
         <h1>PHIM ĐANG CHIẾU</h1>
         <div class="movie-list">
+            <?php $i=1; ?>
             @foreach($phimDangChieu as $phim)
+            <?php $i++;?>
             <div class="movie">
                 <img src="{{ asset('Resources/' . $phim->hinhAnh) }}" alt="{{ $phim->ten }}" />
                 <div class="info">
@@ -74,6 +76,9 @@
                     </div>
                 </div>
             </div>
+            @if($i > 3)
+            @break
+            @endif
             @endforeach
         </div>
         <button class="see-more-btn"><a href="{{ route('phimdangchieu') }}"
@@ -274,13 +279,13 @@
 
             if (maPhim && ngayChieu && suatChieu) {
                 fetch(
-                        `/get-ma-lich-chieu?maPhim=${maPhim}&ngayChieu=${ngayChieu}&gioBatDau=${suatChieu}`
-                    )
+                        `/get-ma-lich-chieu-phim?maPhim=${maPhim}&ngayChieu=${ngayChieu}&gioBatDau=${suatChieu}`
+                        )
                     .then(response => response.json())
                     .then(data => {
                         if (data.maLichChieuPhim) {
-                            window.location.href =
-                                `index.php?action=datghe&maLichChieuPhim=${data.maLichChieuPhim}`;
+                            // Chuyển hướng đến route Laravel thay vì index.php
+                            window.location.href = `/dat-ghe/${data.maLichChieuPhim}`;
                         } else {
                             alert(data.error || 'Không thể tìm thấy lịch chiếu.');
                         }
@@ -289,6 +294,8 @@
                         console.error('Lỗi khi gọi API lấy maLichChieuPhim:', error);
                         alert('Có lỗi xảy ra khi xử lý. Vui lòng thử lại sau.');
                     });
+            } else {
+                alert('Vui lòng chọn đầy đủ thông tin trước khi đặt vé.');
             }
         });
     });
