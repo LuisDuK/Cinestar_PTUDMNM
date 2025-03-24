@@ -21,12 +21,12 @@ class TransHistoryController extends Controller
     $orders = DB::table('donhangonline')
         ->where('maKH', $maKH)
         ->orderBy('ngayDat', 'DESC')
-        ->paginate(10); // Laravel tự động xử lý phân trang
+       ->get(); // Laravel tự động xử lý phân trang
 
     return view('guest.cart.transaction', compact('orders')); // Truyền biến orders vào view
 }
 
-    public function get_table(Request $request)
+        public function get_table(Request $request)
     {
         if (!Auth::check()) {
             return response()->json(['error' => 'Không tìm thấy mã khách hàng'], 403);
@@ -53,22 +53,10 @@ class TransHistoryController extends Controller
                 <td><a href='" . route('ticket.detail', ['maDonHang' => $order->maDonHang]) . "'>Xem chi tiết</a></td>
             </tr>";
         }
-        $soDongConThieu = 10 - count($orders);
-        for ($i = 0; $i < $soDongConThieu; $i++) {
-            $orderHTML .= "
-            <tr>
-                <td colspan='6' style='height:40px;'></td>
-            </tr>";
-        }
+      
 
-        // Pagination HTML
-        $paginationHTML = $orders->links()->toHtml();
-        if ($orders->total() <= 10) {
-            $paginationHTML = '<ul class="page-buttons" > <li> <a style="text-decoration:none; color:black;" href="#">1</a></li></ul>';
-        }
         return response()->json([
             'orderHTML' => $orderHTML,
-            'paginationHTML' => $paginationHTML,
         ]);
     }
     public function showticket($maDonHang)

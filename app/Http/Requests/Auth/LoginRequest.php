@@ -61,7 +61,7 @@ class LoginRequest extends FormRequest
             ]);
         }
         
-        if (request()->is('adminhome') && $user->account_type != 1) {
+        if (request()->is('admin.login') && $user->account_type != 1) {
             // Nếu truy cập /adminhome nhưng không phải account_type = 1 -> Đăng xuất
             Auth::logout();
             throw ValidationException::withMessages([

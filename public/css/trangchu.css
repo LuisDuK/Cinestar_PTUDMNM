@@ -597,26 +597,8 @@ button.btn.purple b {
     margin: 0;
 }
 
-.prev,
-.next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    padding: 10px;
-    font-size: 2em;
-}
-
 .prev {
     left: 10px;
-}
-
-.next {
-    right: 10px;
 }
 
 .members {

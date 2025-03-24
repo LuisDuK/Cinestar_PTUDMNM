@@ -42,13 +42,9 @@ Route::get('/get-ma-lich-chieu-phim','App\Http\Controllers\Guest\HomeController@
 
 Route::get('/get-booked-seats', 'App\Http\Controllers\Guest\BookingTicketController@getBookedSeats')->name('bookedseats');
 Route::POST('/update-cart', 'App\Http\Controllers\Guest\BookingTicketController@updatecart')->name('update.cart');
-Route::get('/payment', 'App\Http\Controllers\Guest\BookingTicketController@bookTicket')->name('payment');
-Route::get('/transhistory', 'App\Http\Controllers\Guest\TransHistoryController@showall')->name('transhistory');
-Route::get('/transtable', 'App\Http\Controllers\Guest\TransHistoryController@get_table')->name('get.trans.table');
-Route::get('/ticket.detail/{maDonHang}', 'App\Http\Controllers\Guest\TransHistoryController@showticket')->name('ticket.detail');
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/payment', 'App\Http\Controllers\Guest\BookingTicketController@bookTicket')->middleware('auth')->name('payment');
+Route::get('/transhistory', 'App\Http\Controllers\Guest\TransHistoryController@showall')->middleware('auth')->name('transhistory');
+Route::get('/ticket-detail/{maDonHang}', 'App\Http\Controllers\Guest\TransHistoryController@showticket')->middleware('auth')->name('ticket.detail');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -56,12 +52,10 @@ Route::get('/dashboard', function () {
 
 Route::get('/auth', 'App\Http\Controllers\Guest\AuthController@viewauth')->name('auth');;
 
-// Trả về nội dung form đăng nhập
 Route::get('/auth/login', function () {
     return view('auth.Guest.login_content');
 })->name('authlogin');;
 
-// Trả về nội dung form đăng ký
 Route::get('/auth/register', function () {
     return view('auth.Guest.register_content');
 })->name('authregister');;
@@ -103,4 +97,17 @@ Route::get('/checkout', function () {
 })->name('checkout');
 
 require __DIR__.'/auth.php';
-/*--Guest---*/
+/*----endGuest---*/
+/*admin*/
+Route::get('/admin/login', 'App\Http\Controllers\Admin\LoginController@viewauth')->name('admin.login');
+Route::get('/admin/dashboard', 'App\Http\Controllers\Admin\DashboardController@viewdash')->middleware([ 'admin'])->name('admin.dashboard');
+
+
+Route::get('/admin/quanlyphim', 'App\Http\Controllers\Admin\FilmlistController@viewfilmlist')->middleware([ 'admin'])->name('quanly.phim');
+Route::get('/admin/quanlyphim/create', 'App\Http\Controllers\Admin\FilmlistController@viewfilmlist')->middleware([ 'admin'])->name('quanlyphim.create');
+Route::get('/admin/quanlyphim/destroy', 'App\Http\Controllers\Admin\FilmlistController@viewfilmlist')->middleware([ 'admin'])->name('quanlyphim.destroy');
+Route::get('/admin/quanlynhansu', 'App\Http\Controllers\Admin\LoginController@viewauth')->middleware(['admin'])->name('quanly.nhansu');
+
+Route::get('/admin/quanlylichchieu', 'App\Http\Controllers\Admin\LoginController@viewauth')->middleware(['admin'])->name('quanly.lichchieu');
+Route::get('/admin/profile/{maNV}', 'App\Http\Controllers\Admin\LoginController@viewauth')->middleware(['admin'])->name('admin.profile');
+/*----endAdmin----*/

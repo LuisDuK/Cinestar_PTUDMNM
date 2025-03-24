@@ -280,7 +280,7 @@
             if (maPhim && ngayChieu && suatChieu) {
                 fetch(
                         `/get-ma-lich-chieu-phim?maPhim=${maPhim}&ngayChieu=${ngayChieu}&gioBatDau=${suatChieu}`
-                        )
+                    )
                     .then(response => response.json())
                     .then(data => {
                         if (data.maLichChieuPhim) {

@@ -37,11 +37,8 @@ class AuthenticatedSessionController extends Controller
     if ($user->account_type == 0) {
         return redirect()->intended('/homeindex');
     } elseif ($user->account_type == 1) {
-        return redirect()->intended('/adminhome');
+        return redirect()->intended('/admin/dashboard');
     }
-
-    // Mặc định nếu không có điều kiện nào khớp
-    return redirect()->intended('/');
 }
 
 
@@ -60,7 +57,7 @@ class AuthenticatedSessionController extends Controller
             if ($user->account_type == 0) {
                 $redirectRoute = '/auth'; // Người dùng thường về trang đăng nhập
             } elseif ($user->account_type == 1) {
-                $redirectRoute = '/adminlogin'; // Quản trị viên về trang đăng nhập admin
+                $redirectRoute = '/admin/login'; // Quản trị viên về trang đăng nhập admin
             }
         }
     

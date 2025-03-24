@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
+
+
 class ConfirmablePasswordController extends Controller
 {
     /**
@@ -28,17 +30,28 @@ class ConfirmablePasswordController extends Controller
      */
     public function store(Request $request)
     {
-        if (! Auth::guard('web')->validate([
-            'email' => $request->user()->email,
-            'password' => $request->password,
-        ])) {
-            throw ValidationException::withMessages([
-                'password' => __('auth.password'),
-            ]);
-        }
+        $credentials = $request->only('email', 'password');
 
-        $request->session()->put('auth.password_confirmed_at', time());
-
-        return redirect()->intended(RouteServiceProvider::HOME);
+    if (!Auth::attempt($credentials)) {
+        throw ValidationException::withMessages([
+            'email' => __('auth.failed'), // Thông báo lỗi nếu đăng nhập thất bại
+        ]);
     }
+
+    // Lấy thông tin người dùng đã đăng nhập
+    $user = Auth::user();
+
+    // Lưu thời gian xác nhận mật khẩu
+    $request->session()->put('auth.password_confirmed_at', time());
+
+    // Kiểm tra account_type và điều hướng
+    if ($user->account_type == 0) {
+        return redirect()->route('homeindex'); // Khách hàng
+    } elseif ($user->account_type == 1) {
+        return redirect()->route('admin.dashboard'); // Nhân viên / Admin
+    }
+
+    // Nếu không xác định được loại tài khoản, quay về mặc định
+    return redirect()->intended(RouteServiceProvider::HOME);
+}
 }
