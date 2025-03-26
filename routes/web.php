@@ -123,9 +123,11 @@ Route::post('/admin/quanlylichchieu/save', 'App\Http\Controllers\Admin\ScheduleC
 
 Route::get('/admin/quanlynhansu', 'App\Http\Controllers\Admin\EmployeesController@viewEmployees')->middleware([ 'admin'])->name('quanly.nhansu');
 Route::POST('/admin/quanlynhansu/save', 'App\Http\Controllers\Admin\EmployeesController@store')->middleware([ 'admin'])->name('quanlynhansu.save');
+Route::POST('/admin/quanlynhansu/change-password/{id}', 'App\Http\Controllers\Admin\EmployeesController@changePassword')->middleware([ 'admin'])->name('quanlynhansu.change-password');
+Route::POST('/admin/quanlynhansu/update/{id}', 'App\Http\Controllers\Admin\EmployeesController@update')->middleware([ 'admin'])->name('quanlynhansu.update');
 
 
 
-
-Route::get('/admin/profile/{maNV}', 'App\Http\Controllers\Admin\LoginController@viewauth')->middleware(['admin'])->name('admin.profile');
+Route::get('/admin/profile', 'App\Http\Controllers\Admin\ProfileController@viewProfile')->middleware(['admin'])->name('admin.profile');
+Route::post('/admin/profile/updateavatar/{id}', 'App\Http\Controllers\Admin\ProfileController@updateAvatar')->middleware(['admin'])->name('profile.updateAvatar');
 /*----endAdmin----*/

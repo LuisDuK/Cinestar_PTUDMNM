@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>{{ $title }}</title>
+    <link rel="shortcut icon" href="https://cinestar.com.vn/pictures/logo/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" type="text/css" href="{{ asset('css/admin/style.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('css/admin/movie.css') }}" />
@@ -50,10 +51,10 @@
                     </form>
                     <div class="profile ms-auto d-flex align-items-center">
                         <div id="nameUser">
-                            {{ Auth::user()->hoTen }}
+                            {{ Auth::user()->name }}
                         </div>
                         <a class="navbar-brand" href="#">
-                            <img src="{{ asset(Auth::user()->hinhAnh) }}" alt="Logo" style="
+                            <img src="{{ asset('storage/profile/'.Auth::user()->avatar) }}" alt="Logo" style="
                         width: 40px;
                         border: 1px solid white;
                         margin-left: 10px;
@@ -66,7 +67,7 @@
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li>
                                         <a class="dropdown-item"
-                                            href="{{ route('admin.profile', ['maNV' => Auth::user()->id]) }}">Thông tin
+                                            href="{{ route('admin.profile') }}">Thông tin
                                             cá nhân</a>
                                     </li>
                                     <li>

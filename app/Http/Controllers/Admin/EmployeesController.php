@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\File;
 
 class EmployeesController extends Controller
 { 
@@ -76,5 +77,54 @@ class EmployeesController extends Controller
              return back();
          }
      }
+
+     public function update(Request $request, $id)
+     {
+         $employee = User::findOrFail($id);
+     
+         $avatar = $employee->avatar;
+         if ($request->hasFile('avatar')) {
+            if ($employee->avatar && File::exists(public_path('storage/profile/' . $employee->avatar))) {
+                File::delete(public_path('storage/profile/' . $employee->avatar));
+            }
+            $fileName = $id . '.' . $request->file('avatar')->extension();
+        
+            $request->file('avatar')->storeAs('public/profile', $fileName);
+            $employee->avatar = $fileName;
+         }
+     
+         $employee->name = $request->name;
+         $employee->gender = $request->gender;
+         $employee->address = $request->address;
+         $employee->phone = $request->phone;
+         $employee->email = $request->email;
+         $employee->status = $request->status;  
+     
+         // Cập nhật trực tiếp
+         $employee->save(); 
+     
+         return redirect()->back()->with('success', 'Cập nhật thông tin nhân viên thành công');
+     }
+     public function changePassword(Request $request, $id)
+     {
+         try {
+           // dd($request->all());
+             $request->validate([
+                 'new_password' => 'required|min:6|confirmed',
+             ]);
+         
+             $employee = User::findOrFail($id);
+         
+             $employee->password = Hash::make($request->new_password);
+         
+             $employee->save();
+         
+             return redirect()->back()->with('success', 'Mật khẩu đã được thay đổi thành công');
+         } catch (\Exception $e) {
+             // Bắt lỗi và hiển thị thông báo lỗi
+             return redirect()->back()->with('error', 'Đã xảy ra lỗi khi thay đổi mật khẩu. Vui lòng thử lại sau.');
+         }
+     }
+     
      
 }
