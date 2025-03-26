@@ -27,7 +27,7 @@
                                     $lich)
                                     <li>
                                         <a href="{{ route('dat-ghe', ['maLichChieuPhim' => $lich->maLichChieuPhim]) }}">
-                                            {{ date('h:i A', strtotime($lich->gioBatDau)) }}
+                                            {{ date('h:i A', strtotime($lich->suatChieu)) }}
                                         </a>
                                     </li>
                                     @endforeach

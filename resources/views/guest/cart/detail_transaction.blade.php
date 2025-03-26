@@ -25,8 +25,8 @@
 
                 <p><strong>Phim:</strong> {{ $order->phimTen }}</p>
                 <p><strong>Ngày chiếu:</strong> {{ $order->ngayChieu }}</p>
-                <p><strong>Giờ bắt đầu:</strong> {{ $order->gioBatDau }}</p>
-                <p><strong>Loại hình chiếu:</strong> {{ $order->loaiHinhChieu }}</p>
+                <p><strong>Giờ bắt đầu:</strong> {{ $order->suatChieu }}</p>
+                <p><strong>Loại hình chiếu:</strong> {{ $order->loaiChieu }}</p>
                 <p><strong>Giá vé:</strong> {{ number_format($order->giave, 0, ',', '.') }} VND</p>
                 <p><strong>Danh sách ghế đã đặt:</strong> {{ $order->danh_sach_ghes_da_dat }}</p>
             </div>

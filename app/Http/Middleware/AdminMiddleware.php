@@ -20,7 +20,7 @@ class AdminMiddleware
         //dd(Auth::check(), Auth::user(), session()->all()); 
        // dd(Auth::check(), Auth::user());
         // Kiểm tra nếu chưa đăng nhập
-        if (!Auth::check() || Auth::user()->account_type != 1) {
+        if (!Auth::check() || Auth::user()->role != 1) {
             return redirect('/admin/login');
         }
 

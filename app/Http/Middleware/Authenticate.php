@@ -16,10 +16,8 @@ class Authenticate extends Middleware
     protected function redirectTo($request)
     {
         $user = Auth::user();
-        if (! $request->expectsJson && $user->account_type == 0) {
-            return route('homeindex');
-        }elseif($user->account_type == 1){
-            return route('admin.dashboard');
-        }
+    
+         return route('homeindex');
+       
     }
 }

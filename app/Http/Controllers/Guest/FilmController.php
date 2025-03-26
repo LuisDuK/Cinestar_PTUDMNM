@@ -32,8 +32,8 @@ class FilmController extends Controller
             // Lấy danh sách lịch chiếu của phim
             $lichChieu = DB::table('lichchieuphim')
                 ->where('maPhim', $maPhim)
-                ->whereRaw("CONCAT(ngayChieu, ' ', gioBatDau) > NOW()")
-                ->select('maLichChieuPhim', 'gioBatDau')
+                ->whereRaw("CONCAT(ngayChieu, ' ', suatChieu) > NOW()")
+                ->select('maLichChieuPhim', 'suatChieu')
                 ->get();
             $phimDangChieu = DB::table("Phim")->where('trangThai', 'Đang chiếu')->get();
             return view('guest.movies_detail', compact('movie', 'lichChieu','phimDangChieu'));

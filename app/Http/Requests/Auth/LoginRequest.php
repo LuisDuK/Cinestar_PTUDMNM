@@ -53,16 +53,8 @@ class LoginRequest extends FormRequest
             ]);
         }
         $user = Auth::user();
-        if (request()->is('auth') && $user->account_type != 0) {
+        if (request()->is('auth') ) {
             // Nếu truy cập /auth nhưng không phải account_type = 0 -> Đăng xuất
-            Auth::logout();
-            throw ValidationException::withMessages([
-                'email' => trans('auth.unauthorized'),
-            ]);
-        }
-        
-        if (request()->is('admin.login') && $user->account_type != 1) {
-            // Nếu truy cập /adminhome nhưng không phải account_type = 1 -> Đăng xuất
             Auth::logout();
             throw ValidationException::withMessages([
                 'email' => trans('auth.unauthorized'),

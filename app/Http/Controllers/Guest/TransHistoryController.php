@@ -86,8 +86,8 @@ class TransHistoryController extends Controller
                     ctv.danh_sach_ghes_da_dat,
                     lp.giave,
                     lp.ngayChieu,
-                    lp.gioBatDau,
-                    lp.loaiHinhChieu,
+                    lp.suatChieu,
+                    lp.loaiChieu,
                     p.ten AS phimTen,
                     p.hinhAnh as hinhAnh
                 FROM 

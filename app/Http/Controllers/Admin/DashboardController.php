@@ -10,10 +10,9 @@ use App\Http\Controllers\Controller;
 class DashboardController extends Controller
 { 
   public function viewdash(){
-    $totalNV = DB::table('users')->where('account_type', 1)->count();
+    $totalNV = DB::table('users')->where('role', 1)->count();
 
-    // Tổng số khách hàng (account_type = 0)
-    $totalKH = DB::table('users')->where('account_type', 0)->count();
+    $totalKH = DB::table('users')->where('role', 0)->count();
 
     // Tổng doanh thu (giá vé bán)
     $totalRevenue = DB::table('donhangonline')

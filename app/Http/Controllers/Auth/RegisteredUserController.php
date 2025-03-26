@@ -59,12 +59,8 @@ class RegisteredUserController extends Controller
         // Đăng nhập sau khi đăng ký thành công
         Auth::login($user);
         
-        // Chuyển hướng về trang chủ
-        if ($user->account_type == 0) {
+       
             return redirect('/homeindex'); 
-        } else {
-            return redirect('/adminhome'); 
-        }
     }
         catch (\Exception $e){
             return redirect()->back()->with('error', 'Đăng ký thất bại. Vui lòng thử lại!');

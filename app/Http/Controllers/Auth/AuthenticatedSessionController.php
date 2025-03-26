@@ -33,12 +33,9 @@ class AuthenticatedSessionController extends Controller
 
     $user = Auth::user(); // Lấy thông tin người dùng
 
-    // Chuyển hướng dựa trên account_type
-    if ($user->account_type == 0) {
+   
         return redirect()->intended('/homeindex');
-    } elseif ($user->account_type == 1) {
-        return redirect()->intended('/admin/dashboard');
-    }
+    
 }
 
 
@@ -54,11 +51,8 @@ class AuthenticatedSessionController extends Controller
         $redirectRoute = '/homeindex'; // Mặc định về trang chủ
     
         if ($user) {
-            if ($user->account_type == 0) {
-                $redirectRoute = '/auth'; // Người dùng thường về trang đăng nhập
-            } elseif ($user->account_type == 1) {
-                $redirectRoute = '/admin/login'; // Quản trị viên về trang đăng nhập admin
-            }
+           
+                $redirectRoute = '/auth'; 
         }
     
         Auth::guard('web')->logout();

@@ -5,6 +5,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\MoMoController;
 use App\Http\Controllers\PayPalController;
+use App\Http\Controllers\ScheduleController;
 
 
 /*
@@ -100,14 +101,31 @@ require __DIR__.'/auth.php';
 /*----endGuest---*/
 /*admin*/
 Route::get('/admin/login', 'App\Http\Controllers\Admin\LoginController@viewauth')->name('admin.login');
+Route::POST('admin/logon','App\Http\Controllers\Admin\LoginController@postLogon')->name('admin.logon');
+Route::POST('admin/logout','App\Http\Controllers\Admin\LoginController@signOut')->name('admin.logout');
 Route::get('/admin/dashboard', 'App\Http\Controllers\Admin\DashboardController@viewdash')->middleware([ 'admin'])->name('admin.dashboard');
 
 
 Route::get('/admin/quanlyphim', 'App\Http\Controllers\Admin\FilmlistController@viewfilmlist')->middleware([ 'admin'])->name('quanly.phim');
-Route::get('/admin/quanlyphim/create', 'App\Http\Controllers\Admin\FilmlistController@viewfilmlist')->middleware([ 'admin'])->name('quanlyphim.create');
-Route::get('/admin/quanlyphim/destroy', 'App\Http\Controllers\Admin\FilmlistController@viewfilmlist')->middleware([ 'admin'])->name('quanlyphim.destroy');
-Route::get('/admin/quanlynhansu', 'App\Http\Controllers\Admin\LoginController@viewauth')->middleware(['admin'])->name('quanly.nhansu');
+Route::get('/admin/quanlyphim/create', 'App\Http\Controllers\Admin\FilmlistController@create')->middleware([ 'admin'])->name('quanlyphim.create');
+Route::post('/admin/quanlyphim/store', 'App\Http\Controllers\Admin\FilmlistController@store')->middleware([ 'admin'])->name('quanlyphim.store');
+Route::delete('/admin/quanlyphim/destroy', 'App\Http\Controllers\Admin\FilmlistController@destroy')->middleware([ 'admin'])->name('quanlyphim.destroy');
+Route::get('/admin/quanlyphim/edit/{id}', 'App\Http\Controllers\Admin\FilmlistController@edit')->middleware([ 'admin'])->name('quanlyphim.edit');
+Route::post('/admin/quanlyphim/update/{id}', 'App\Http\Controllers\Admin\FilmlistController@update')->middleware([ 'admin'])->name('quanlyphim.update');
 
-Route::get('/admin/quanlylichchieu', 'App\Http\Controllers\Admin\LoginController@viewauth')->middleware(['admin'])->name('quanly.lichchieu');
+Route::get('/admin/quanlylichchieu', 'App\Http\Controllers\Admin\ScheduleController@viewSchedule')->middleware(['admin'])->name('quanly.lichchieu');
+Route::get('/admin/quanlylichchieu/data', 'App\Http\Controllers\Admin\ScheduleController@getData')->middleware([ 'admin'])->name('quanlylichchieu.data');
+Route::delete('/admin/quanlylichchieu/delete', 'App\Http\Controllers\Admin\ScheduleController@delete')->middleware([ 'admin'])->name('quanlylichchieu.destroy');
+Route::get('/admin/quanlylichchieu/create', 'App\Http\Controllers\Admin\ScheduleController@showForm')->middleware([ 'admin'])->name('quanlylichchieu.showForm');
+Route::get('/admin/quanlylichchieu/loadSchedule', 'App\Http\Controllers\Admin\ScheduleController@loadSchedule')->middleware([ 'admin'])->name('quanlylichchieu.loadSchedule');
+Route::post('/admin/quanlylichchieu/create', 'App\Http\Controllers\Admin\ScheduleController@handleSubmit')->middleware([ 'admin'])->name('quanlylichchieu.handleSubmit');
+Route::post('/admin/quanlylichchieu/save', 'App\Http\Controllers\Admin\ScheduleController@saveSchedule')->middleware([ 'admin'])->name('quanlylichchieu.saveSchedule');
+
+Route::get('/admin/quanlynhansu', 'App\Http\Controllers\Admin\EmployeesController@viewEmployees')->middleware([ 'admin'])->name('quanly.nhansu');
+Route::POST('/admin/quanlynhansu/save', 'App\Http\Controllers\Admin\EmployeesController@store')->middleware([ 'admin'])->name('quanlynhansu.save');
+
+
+
+
 Route::get('/admin/profile/{maNV}', 'App\Http\Controllers\Admin\LoginController@viewauth')->middleware(['admin'])->name('admin.profile');
 /*----endAdmin----*/

@@ -44,14 +44,9 @@ class ConfirmablePasswordController extends Controller
     // Lưu thời gian xác nhận mật khẩu
     $request->session()->put('auth.password_confirmed_at', time());
 
-    // Kiểm tra account_type và điều hướng
-    if ($user->account_type == 0) {
+   
         return redirect()->route('homeindex'); // Khách hàng
-    } elseif ($user->account_type == 1) {
-        return redirect()->route('admin.dashboard'); // Nhân viên / Admin
-    }
 
-    // Nếu không xác định được loại tài khoản, quay về mặc định
-    return redirect()->intended(RouteServiceProvider::HOME);
+ 
 }
 }

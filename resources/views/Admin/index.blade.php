@@ -118,7 +118,7 @@
 <body>
     <div class="boxcenter">
 
-        <form action="{{ route('login') }}" method="POST">
+        <form action="{{ route('admin.logon') }}" method="POST">
             @csrf
             <h2>ĐĂNG NHẬP</h2>
             <div class="imgcontainer">

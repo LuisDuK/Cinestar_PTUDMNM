@@ -64,16 +64,27 @@
                 @foreach ($movies as $movie)
                 <tr>
                     <td>
+                        <a href="{{ route('quanlyphim.edit', ['id' => $movie->maPhim]) }}" class="btn-edit">Chỉnh
+                            sửa</a>
                         <button class="btn-delete" data-id="{{ $movie->maPhim }}">Xóa</button>
                     </td>
-                    <td><img src="{{ asset($movie->hinhAnh) }}" width="50"></td>
+                    <td><img src="{{ asset('Resources/'.$movie->hinhAnh) }}" width="50"></td>
                     <td><a href="{{ $movie->trailer }}" target="_blank">Xem</a></td>
                     <td>{{ $movie->ten }}</td>
-                    <td>{{ $movie->tenLoaiPhim }}</td>
+                    <td>{{ $movie->tentheLoai }}</td>
                     <td>{{ $movie->tenQuocGia }}</td>
                     <td>{{ $movie->namSanXuat }}</td>
                     <td>{{ $movie->soLuongSuatChieu }}</td>
-                    <td>{{ $movie->trangThai }}</td>
+                    <td>
+                        <span class="
+        @if($movie->trangThai == 'Đang chiếu') text-success
+        @elseif($movie->trangThai == 'Sắp chiếu') text-warning
+        @elseif($movie->trangThai == 'Đã chiếu') text-danger
+        @endif">
+                            {{ $movie->trangThai }}
+                        </span>
+                    </td>
+
                 </tr>
                 @endforeach
             </tbody>
