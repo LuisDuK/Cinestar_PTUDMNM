@@ -64,14 +64,14 @@
         <table class="table table-bordered" id="scheduleTable">
             <thead>
                 <tr>
-                    <th>Mã lịch chiếu</th>
+                    <th style="width: 10%;">Mã lịch chiếu</th>
                     <th>Tên phim</th>
                     <th>Ngày chiếu</th>
                     <th>Phòng chiếu</th>
                     <th>Suất chiếu</th>
                     <th>Loại chiếu</th>
                     <th>Giá vé</th>
-                    <th>Điều chỉnh</th>
+                    <th style="width: 10%;">Điều chỉnh</th>
                 </tr>
             </thead>
             <tbody id="schedule-list">
@@ -178,6 +178,11 @@
                     }
                 });
             }
+        });
+        $(document).on('click', '.btn-edit', function() {
+            let maLichChieu = $(this).data('id');
+
+            window.location.href = `/admin/quanlylichchieu/edit/${maLichChieu}`;
         });
 
     });

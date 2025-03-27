@@ -84,7 +84,7 @@ public function store(Request $request)
                 $file->move(public_path('resources/uploads/thumbnail'), $file->getClientOriginalName());
             
                 
-                $hinhAnh = 'resources/uploads/thumbnail/' . $file->getClientOriginalName();
+                $hinhAnh = './uploads/thumbnail/' . $file->getClientOriginalName();
             }
     
             // Bắt đầu transaction để đảm bảo dữ liệu không bị lỗi

@@ -332,4 +332,43 @@ document.addEventListener("DOMContentLoaded", () => {
             draggedOutSection.removeAttribute("data-current-drag");
         }
     });
+    document.querySelectorAll(".movie-title").forEach((movie) => {
+        movie.setAttribute("draggable", "true");
+
+        movie.addEventListener("dragstart", function (event) {
+            event.dataTransfer.setData(
+                "text/plain",
+                event.target.dataset.movieId
+            );
+            event.target.closest(".schedule-cinema").dataset.currentDrag =
+                "true";
+        });
+    });
+    document
+        .querySelector(".movie-list")
+        .addEventListener("drop", function (event) {
+            event.preventDefault();
+            const movieId = event.dataTransfer.getData("text/plain");
+
+            const draggedOutSection = document.querySelector(
+                `.schedule-cinema[data-current-drag="true"]`
+            );
+
+            if (draggedOutSection) {
+                const movieDetails =
+                    draggedOutSection.querySelector(".movie-details");
+                if (movieDetails) {
+                    movieDetails.remove(); // Xóa hoàn toàn thông tin phim khỏi HTML
+                }
+
+                // Xóa các thuộc tính liên quan để phòng trở về trạng thái trống
+                draggedOutSection.removeAttribute("data-has-movie");
+                draggedOutSection.removeAttribute("data-current-drag");
+                draggedOutSection.dataset.previous = JSON.stringify({
+                    maPhim: null,
+                    loaiHinhChieu: "",
+                    giaVe: 0,
+                });
+            }
+        });
 });

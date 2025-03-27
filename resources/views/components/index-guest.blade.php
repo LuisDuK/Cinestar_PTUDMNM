@@ -68,7 +68,7 @@
                 <div class="user-actions">
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
-                            @if (Auth::check())
+                            @if (Auth::check() && Auth::user()->role == 0)
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 {{ __('Xin chào') }}, {{ Auth::user()->name }}
@@ -76,7 +76,7 @@
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown"
                                 style="background: linear-gradient(to left, #131921, #49136b);">
                                 <li>
-                                    <a class="dropdown-item" style="color:white;" href="{{ url('/profile') }}">
+                                    <a class="dropdown-item" style="color:white;" href="{{ route('account.profile') }}">
                                         {{ __('Thông tin cá nhân') }}
                                     </a>
                                 </li>

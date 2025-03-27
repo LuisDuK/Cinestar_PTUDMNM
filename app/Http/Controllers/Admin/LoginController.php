@@ -14,12 +14,22 @@ class LoginController extends Controller
     return view('admin.index');
   }
   public function postLogon(Request $request){
+
+    if (Auth::check()) {
+      Auth::logout();
+      session()->invalidate(); 
+      session()->regenerateToken(); 
+  }
+
     if(Auth::attempt(['email'=>$request->email, 'password'=> $request->password, 'role'=>1])){
+      $user = Auth::user();
+      session(['auth_role' => $user->role]);
       return redirect()->route('admin.dashboard');
     }
-    return redirect()->back()->with ('err','Sai thông tin');
+    return redirect()->back()->withErrors(['loginError' => 'Sai thông tin đăng nhập hoặc không có quyền truy cập.']);
   }
   public function signOut(){
+    session()->forget('auth_role');
     Auth::logout();
     return redirect()->route('admin.login');
   }

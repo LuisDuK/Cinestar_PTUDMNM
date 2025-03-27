@@ -33,6 +33,10 @@
         /* Làm mờ để nhìn rõ là bị disabled */
     }
 
+    .table.dataTable thead>tr>th {
+        padding-right: 5px !important;
+    }
+
     .modal-content {
         background-color: #f8f9fa !important;
 

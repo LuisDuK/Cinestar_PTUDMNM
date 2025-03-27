@@ -16,7 +16,7 @@ class Authenticate extends Middleware
     protected function redirectTo($request)
     {
         $user = Auth::user();
-    
+      
          return route('homeindex');
        
     }

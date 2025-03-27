@@ -13,18 +13,18 @@
                 </div>
 
                 <!-- The slideshow/carousel -->
-                <div class="carousel-inner">
+                <div class="carousel-inner" style="justify-items: center; height: 400px;">
                     <div class="carousel-item active">
-                        <img src="{{ asset('Resources/Images/DefaultPage/bap-nuoc-onl.webp') }} " alt=" Los Angeles"
-                            class="d-block" style="width:100%">
+                        <img src="{{ asset('Resources/Images/DefaultPage/thieunu.jpg') }} " class="d-block"
+                            style="width:100%; height: 80%;">
                     </div>
                     <div class="carousel-item">
-                        <img src="{{ asset('Resources/Images/DefaultPage/bap-nuoc-onl.webp') }} " alt="Chicago"
-                            class="d-block" style="width:100%">
+                        <img src="{{ asset('Resources/Images/DefaultPage/iu.jpg') }} " class="d-block"
+                            style="width:100%; height: 80%;">
                     </div>
                     <div class="carousel-item">
-                        <img src="{{ asset('Resources/Images/DefaultPage/bap-nuoc-onl.webp') }} " alt="New York"
-                            class="d-block" style="width:100%">
+                        <img src="{{ asset('Resources/Images/DefaultPage/cuocxe.jpg') }} " class="d-block"
+                            style="width:100%; height: 80%;">
                     </div>
                 </div>
 
@@ -88,7 +88,9 @@
     <div class="phim-sap-chieu">
         <h1>PHIM SẮP CHIẾU</h1>
         <div class="movie-list">
+            <?php $j=1; ?>
             @foreach($phimSapChieu as $phim)
+            <?php $j++;?>
             <div class="movie">
                 <img src="{{ asset('Resources/' . $phim->hinhAnh) }}" alt="{{ $phim->ten }}" />
                 <div class="info">
@@ -103,6 +105,9 @@
                     </div>
                 </div>
             </div>
+            @if($j > 3)
+            @break
+            @endif
             @endforeach
         </div>
         <button class="see-more-btn"><a href="{{ route('phimsapchieu') }}"
@@ -256,7 +261,7 @@
                         if (data.length > 0) {
                             data.forEach(suat => {
                                 suatDropdown.innerHTML +=
-                                    `<option value="${suat.gioBatDau}">${suat.gioBatDau} - ${suat.loaiHinhChieu}</option>`;
+                                    `<option value="${suat.suatChieu}">${suat.suatChieu} - ${suat.loaiChieu}</option>`;
                             });
                             suatDropdown.disabled = false;
                             btnDatNgay.disabled = false;

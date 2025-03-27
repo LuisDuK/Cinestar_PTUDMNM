@@ -32,9 +32,14 @@ class AuthenticatedSessionController extends Controller
     $request->session()->regenerate();
 
     $user = Auth::user(); // Lấy thông tin người dùng
-
    
-        return redirect()->intended('/homeindex');
+    if ($user->role == 1) {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('auth')->with('status', 'Tài khoản của bạn không có quyền truy cập.');
+    }
+    return redirect()->intended('/homeindex');
     
 }
 
@@ -51,7 +56,6 @@ class AuthenticatedSessionController extends Controller
         $redirectRoute = '/homeindex'; // Mặc định về trang chủ
     
         if ($user) {
-           
                 $redirectRoute = '/auth'; 
         }
     

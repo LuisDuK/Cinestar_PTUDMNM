@@ -3,8 +3,8 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Đăng nhập </title>
-    <link rel="icon" type="image/x-icon" href="{{ asset('Resources/Images/DefaultPage/favicon.ico') }}">
+    <title>Đăng nhập-Admin </title>
+    <link rel="shortcut icon" href="https://cinestar.com.vn/pictures/logo/favicon.ico" />
     <style>
     body {
         font-family: Arial, Helvetica, sans-serif;
@@ -129,10 +129,11 @@
                 <input type="text" id="email" name="email" placeholder="Nhập tài khoản" required />
                 <label for="password"><b>Mật khẩu</b></label>
                 <input type="password" placeholder="Enter Password" name="password" required>
+
+                <button type="submit"><b>ĐĂNG NHẬP</b></button>
                 @if ($errors->has('loginError'))
                 <p class="error">{{ $errors->first('loginError') }}</p>
                 @endif
-                <button type="submit"><b>ĐĂNG NHẬP</b></button>
             </div>
         </form>
     </div>

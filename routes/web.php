@@ -43,13 +43,18 @@ Route::get('/get-ma-lich-chieu-phim','App\Http\Controllers\Guest\HomeController@
 
 Route::get('/get-booked-seats', 'App\Http\Controllers\Guest\BookingTicketController@getBookedSeats')->name('bookedseats');
 Route::POST('/update-cart', 'App\Http\Controllers\Guest\BookingTicketController@updatecart')->name('update.cart');
-Route::get('/payment', 'App\Http\Controllers\Guest\BookingTicketController@bookTicket')->middleware('auth')->name('payment');
-Route::get('/transhistory', 'App\Http\Controllers\Guest\TransHistoryController@showall')->middleware('auth')->name('transhistory');
-Route::get('/ticket-detail/{maDonHang}', 'App\Http\Controllers\Guest\TransHistoryController@showticket')->middleware('auth')->name('ticket.detail');
+Route::get('/payment', 'App\Http\Controllers\Guest\BookingTicketController@bookTicket')->middleware('checkguest')->name('payment');
+Route::get('/transhistory', 'App\Http\Controllers\Guest\TransHistoryController@showall')->middleware('checkguest')->name('transhistory');
+Route::get('/ticket-detail/{maDonHang}', 'App\Http\Controllers\Guest\TransHistoryController@showticket')->middleware('checkguest')->name('ticket.detail');
+
+Route::get('/account/profile', 'App\Http\Controllers\Guest\AuthController@index')->middleware('checkguest')->name('account.profile');
+Route::post('/account/profile/change-password',  'App\Http\Controllers\Guest\AuthController@index')->middleware('checkguest')->name('account.change-password');
+Route::post('/account/update', 'App\Http\Controllers\Guest\AuthController@update')->middleware('checkguest')->name('account.update');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+})->middleware('checkguest')->name('dashboard');
 
 Route::get('/auth', 'App\Http\Controllers\Guest\AuthController@viewauth')->name('auth');;
 
@@ -84,8 +89,6 @@ Route::post('/email/verification-notification', function (Request $request) {
 Route::post('/vnpay/payment','App\Http\Controllers\VNPayController@createPayment')->name('vnpay.payment');
 Route::get('/vnpay/callback', 'App\Http\Controllers\VNPayController@paymentCallback')->name('vnpay.callback');
 
-
-
 Route::post('/momo/payment', [MoMoController::class, 'createPayment'])->name('momo.payment');
 Route::get('/momo/callback', [MoMoController::class, 'paymentCallback'])->name('momo.callback');
 
@@ -106,28 +109,41 @@ Route::POST('admin/logout','App\Http\Controllers\Admin\LoginController@signOut')
 Route::get('/admin/dashboard', 'App\Http\Controllers\Admin\DashboardController@viewdash')->middleware([ 'admin'])->name('admin.dashboard');
 
 
-Route::get('/admin/quanlyphim', 'App\Http\Controllers\Admin\FilmlistController@viewfilmlist')->middleware([ 'admin'])->name('quanly.phim');
-Route::get('/admin/quanlyphim/create', 'App\Http\Controllers\Admin\FilmlistController@create')->middleware([ 'admin'])->name('quanlyphim.create');
-Route::post('/admin/quanlyphim/store', 'App\Http\Controllers\Admin\FilmlistController@store')->middleware([ 'admin'])->name('quanlyphim.store');
-Route::delete('/admin/quanlyphim/destroy', 'App\Http\Controllers\Admin\FilmlistController@destroy')->middleware([ 'admin'])->name('quanlyphim.destroy');
-Route::get('/admin/quanlyphim/edit/{id}', 'App\Http\Controllers\Admin\FilmlistController@edit')->middleware([ 'admin'])->name('quanlyphim.edit');
-Route::post('/admin/quanlyphim/update/{id}', 'App\Http\Controllers\Admin\FilmlistController@update')->middleware([ 'admin'])->name('quanlyphim.update');
+Route::get('/admin/quanlyphim', 'App\Http\Controllers\Admin\FilmlistController@viewfilmlist')->middleware(['admin', 'check.permission:1'])->name('quanly.phim');
+Route::get('/admin/quanlyphim/create', 'App\Http\Controllers\Admin\FilmlistController@create')->middleware(['admin', 'check.permission:1'])->name('quanlyphim.create');
+Route::post('/admin/quanlyphim/store', 'App\Http\Controllers\Admin\FilmlistController@store')->middleware(['admin', 'check.permission:1'])->name('quanlyphim.store');
+Route::delete('/admin/quanlyphim/destroy', 'App\Http\Controllers\Admin\FilmlistController@destroy')->middleware(['admin', 'check.permission:1'])->name('quanlyphim.destroy');
+Route::get('/admin/quanlyphim/edit/{id}', 'App\Http\Controllers\Admin\FilmlistController@edit')->middleware(['admin', 'check.permission:1'])->name('quanlyphim.edit');
+Route::post('/admin/quanlyphim/update/{id}', 'App\Http\Controllers\Admin\FilmlistController@update')->middleware(['admin', 'check.permission:1'])->name('quanlyphim.update');
 
-Route::get('/admin/quanlylichchieu', 'App\Http\Controllers\Admin\ScheduleController@viewSchedule')->middleware(['admin'])->name('quanly.lichchieu');
-Route::get('/admin/quanlylichchieu/data', 'App\Http\Controllers\Admin\ScheduleController@getData')->middleware([ 'admin'])->name('quanlylichchieu.data');
-Route::delete('/admin/quanlylichchieu/delete', 'App\Http\Controllers\Admin\ScheduleController@delete')->middleware([ 'admin'])->name('quanlylichchieu.destroy');
-Route::get('/admin/quanlylichchieu/create', 'App\Http\Controllers\Admin\ScheduleController@showForm')->middleware([ 'admin'])->name('quanlylichchieu.showForm');
-Route::get('/admin/quanlylichchieu/loadSchedule', 'App\Http\Controllers\Admin\ScheduleController@loadSchedule')->middleware([ 'admin'])->name('quanlylichchieu.loadSchedule');
-Route::post('/admin/quanlylichchieu/create', 'App\Http\Controllers\Admin\ScheduleController@handleSubmit')->middleware([ 'admin'])->name('quanlylichchieu.handleSubmit');
-Route::post('/admin/quanlylichchieu/save', 'App\Http\Controllers\Admin\ScheduleController@saveSchedule')->middleware([ 'admin'])->name('quanlylichchieu.saveSchedule');
+Route::get('/admin/quanlylichchieu', 'App\Http\Controllers\Admin\ScheduleController@viewSchedule')->middleware(['admin', 'check.permission:3'])->name('quanly.lichchieu');
+Route::get('/admin/quanlylichchieu/data', 'App\Http\Controllers\Admin\ScheduleController@getData')->middleware(['admin', 'check.permission:3'])->name('quanlylichchieu.data');
+Route::delete('/admin/quanlylichchieu/delete', 'App\Http\Controllers\Admin\ScheduleController@delete')->middleware(['admin', 'check.permission:3'])->name('quanlylichchieu.destroy');
+Route::get('/admin/quanlylichchieu/create', 'App\Http\Controllers\Admin\ScheduleController@showForm')->middleware(['admin', 'check.permission:3'])->name('quanlylichchieu.showForm');
+Route::get('/admin/quanlylichchieu/loadSchedule', 'App\Http\Controllers\Admin\ScheduleController@loadSchedule')->middleware(['admin', 'check.permission:3'])->name('quanlylichchieu.loadSchedule');
+Route::post('/admin/quanlylichchieu/create', 'App\Http\Controllers\Admin\ScheduleController@handleSubmit')->middleware(['admin', 'check.permission:3'])->name('quanlylichchieu.handleSubmit');
+Route::post('/admin/quanlylichchieu/save', 'App\Http\Controllers\Admin\ScheduleController@saveSchedule')->middleware(['admin', 'check.permission:3'])->name('quanlylichchieu.saveSchedule');
+Route::get('/admin/quanlylichchieu/edit/{maLichChieu}', 'App\Http\Controllers\Admin\ScheduleController@showFormEdit')->middleware(['admin', 'check.permission:3'])->name('quanlylichchieu.edit');
 
-Route::get('/admin/quanlynhansu', 'App\Http\Controllers\Admin\EmployeesController@viewEmployees')->middleware([ 'admin'])->name('quanly.nhansu');
-Route::POST('/admin/quanlynhansu/save', 'App\Http\Controllers\Admin\EmployeesController@store')->middleware([ 'admin'])->name('quanlynhansu.save');
-Route::POST('/admin/quanlynhansu/change-password/{id}', 'App\Http\Controllers\Admin\EmployeesController@changePassword')->middleware([ 'admin'])->name('quanlynhansu.change-password');
-Route::POST('/admin/quanlynhansu/update/{id}', 'App\Http\Controllers\Admin\EmployeesController@update')->middleware([ 'admin'])->name('quanlynhansu.update');
-
-
+Route::get('/admin/quanlynhansu', 'App\Http\Controllers\Admin\EmployeesController@viewEmployees')->middleware(['admin', 'check.permission:7'])->name('quanly.nhansu');
+Route::POST('/admin/quanlynhansu/save', 'App\Http\Controllers\Admin\EmployeesController@store')->middleware(['admin', 'check.permission:7'])->name('quanlynhansu.save');
+Route::POST('/admin/quanlynhansu/change-password/{id}', 'App\Http\Controllers\Admin\EmployeesController@changePassword')->middleware(['admin', 'check.permission:7'])->name('quanlynhansu.change-password');
+Route::POST('/admin/quanlynhansu/update/{id}', 'App\Http\Controllers\Admin\EmployeesController@update')->middleware(['admin', 'check.permission:7'])->name('quanlynhansu.update');
 
 Route::get('/admin/profile', 'App\Http\Controllers\Admin\ProfileController@viewProfile')->middleware(['admin'])->name('admin.profile');
 Route::post('/admin/profile/updateavatar/{id}', 'App\Http\Controllers\Admin\ProfileController@updateAvatar')->middleware(['admin'])->name('profile.updateAvatar');
+
+Route::get('/admin/quanlyphanquyen/chucnang', 'App\Http\Controllers\Admin\RoleController@viewRole')->middleware(['admin', 'check.permission:6'])->name('quanly.phanquyen.chucnang');
+Route::get('/admin/quanlyphanquyen/{employeeID}', 'App\Http\Controllers\Admin\RoleController@getPermissions')->middleware(['admin', 'check.permission:7']);
+Route::get('/admin/quanlyphanquyen/quyencanhan/{employeeID}', 'App\Http\Controllers\Admin\RoleController@getAvailableFunctions')->middleware(['admin', 'check.permission:7']);
+Route::post('/admin/quanlyphanquyen/assign', 'App\Http\Controllers\Admin\RoleController@addPermission')->middleware(['admin', 'check.permission:7'])->name('quanlyphanquyen.assign');
+Route::delete('/admin/quanlyphanquyen/quyencanhan/xoa/{employeeID}/{permessionId}', 'App\Http\Controllers\Admin\RoleController@destroy')->middleware(['admin', 'check.permission:7']);
+
+
+Route::middleware(['auth', 'check.permission:2'])->group(function () {
+    Route::get('/admin/phongchieu', 'App\Http\Controllers\Admin\RoomController@viewRoomList')->name('quanly.phongchieu');
+    Route::post('/admin/phongchieu', 'App\Http\Controllers\Admin\RoomController@store')->name('quanlyphongchieu.store');
+    Route::put('/admin/phongchieu/{id}', 'App\Http\Controllers\Admin\RoomController@update')->name('quanlyphongchieu.update');
+    Route::delete('/admin/phongchieu/{id}', 'App\Http\Controllers\Admin\RoomController@destroy')->name('quanlyphongchieu.destroy');
+});
 /*----endAdmin----*/

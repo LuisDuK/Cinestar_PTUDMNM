@@ -18,6 +18,9 @@ class ScheduleController extends Controller
     // Lấy ngày của 1 tuần sau
     $end_date = now()->addWeek()->toDateString(); // 1 tuần sau
 
+    $ngayBatDau = now()->addDays(7)->format('Y-m-d');
+    $ngayKetThuc = now()->addDays(14)->format('Y-m-d'); 
+    
     // Truy vấn danh sách lịch chiếu
     $lichChieu = DB::table('lichchieuphim')
         ->join('phim', 'lichchieuphim.maPhim', '=', 'phim.maPhim')
@@ -25,15 +28,24 @@ class ScheduleController extends Controller
         ->select('lichchieuphim.*', 'phim.ten', 'phongchieuphim.tenPhongChieu')
         ->get();
     foreach ($lichChieu as $lich) {
-        $lich->action=' <button class="btn btn-warning btn-edit" data-id="' . $lich->maLichChieuPhim . '">Sửa</button>';
-            $lich->action = '<button class="btn btn-danger btn-delete" data-id="' . $lich->maLichChieuPhim . '">Xóa</button>';
-           
+        if ($lich->ngayChieu >= $ngayBatDau && $lich->ngayChieu <= $ngayKetThuc) {
+            $lich->action = '
+                <button class="btn btn-warning btn-edit" data-id="' . $lich->maLichChieuPhim . '">Sửa</button>
+                <button class="btn btn-danger btn-delete" data-id="' . $lich->maLichChieuPhim . '">Xóa</button>
+            ';
+        } else {
+            $lich->action = ''; // Không hiển thị nút nếu ngoài khoảng thời gian
         }
+    }
     // Trả về view với các biến cần thiết
     return view('admin.quanlylichchieu.schedulelist', compact('lichChieu', 'start_date', 'end_date'));
 }
 public function getData(Request $request)
 {
+    
+    $ngayBatDau = now()->addDays(7)->format('Y-m-d');
+    $ngayKetThuc = now()->addDays(14)->format('Y-m-d');
+
     $query = DB::table('lichchieuphim')
         ->join('phim', 'lichchieuphim.maPhim', '=', 'phim.maPhim')
         ->join('phongchieuphim', 'lichchieuphim.maPhongChieuPhim', '=', 'phongchieuphim.maPhongChieu')
@@ -56,16 +68,19 @@ public function getData(Request $request)
     $query->orderBy('lichchieuphim.ngayChieu', 'asc')
           ->orderBy('phim.maPhim', 'asc');
 
-    return DataTables::of($query)
-        ->addColumn('action', function($row) {
-            // Thêm nút Sửa và Xóa vào cột 'action'
-            return '
-                <button class="btn btn-warning btn-edit" data-id="' . $row->maLichChieuPhim . '">Sửa</button>
-                <button class="btn btn-danger btn-delete" data-id="' . $row->maLichChieuPhim . '">Xóa</button>
-            ';
-        })
-        ->rawColumns(['action'])  // Đảm bảo cột 'action' được render dưới dạng HTML
-        ->make(true);
+          return DataTables::of($query)
+          ->addColumn('action', function($row) use ($ngayBatDau, $ngayKetThuc) {
+              // Chỉ hiển thị nút "Sửa" và "Xóa" nếu ngayChieu nằm trong khoảng thời gian yêu cầu
+              if ($row->ngayChieu >= $ngayBatDau && $row->ngayChieu <= $ngayKetThuc) {
+                  return '
+                      <button class="btn btn-warning btn-edit" data-id="' . $row->maLichChieuPhim . '">Sửa</button>
+                      <button class="btn btn-danger btn-delete" data-id="' . $row->maLichChieuPhim . '">Xóa</button>
+                  ';
+              }
+              return ''; // Nếu ngoài khoảng thời gian, không hiển thị nút nào
+          })
+          ->rawColumns(['action'])  // Đảm bảo cột 'action' được render dưới dạng HTML
+          ->make(true);
 }
     
     public function delete(Request $request)
@@ -91,7 +106,27 @@ public function getData(Request $request)
     // Lấy giá trị từ request, nếu không có thì dùng mặc định
     $ngayChieu = $request->query('ngayChieu', now()->addWeek()->format('Y-m-d'));
     $gioChieu = $request->query('gioChieu', '09:00');
+    
+    $ngayBatDau = now()->addDays(7)->format('Y-m-d');
+    $ngayKetThuc = now()->addDays(14)->format('Y-m-d'); 
+    
+    $phongChieu = DB::table('phongchieuphim')->paginate(4, ['*'], 'phongPage');
 
+    $phimDangChieu = DB::table('phim')
+                        ->where('trangThai', 'Đang chiếu')
+                        ->paginate(8, ['*'], 'phimPage');
+
+    return view('admin.quanlylichchieu.schedulecreate', compact(
+        'ngayChieu', 'gioChieu', 'ngayBatDau', 'ngayKetThuc', 'phongChieu', 'phimDangChieu'
+    ));
+}
+public function showFormEdit($maLichChieu)
+{
+    // Lấy giá trị từ request, nếu không có thì dùng mặc định
+   
+    $schedule = DB::table('lichchieuphim')->where('maLichChieuPhim', $maLichChieu)->first();
+    $ngayChieu = $schedule->ngayChieu;
+    $gioChieu =  $schedule->suatChieu;
     $ngayBatDau = now()->addDays(7)->format('Y-m-d');
     $ngayKetThuc = now()->addDays(14)->format('Y-m-d'); 
     

@@ -10,6 +10,8 @@
         /* Chữ đen */
     }
 
+
+
     .table-striped>tbody>tr:nth-of-type(odd)>* {
         --bs-table-color-type: black !important;
         /* Ghi đè nền về trắng */
@@ -49,7 +51,7 @@
             style="background-color:white;">
             <thead>
                 <tr>
-                    <th>Điều chỉnh</th>
+                    <th style="width: 10%;">Điều chỉnh</th>
                     <th>Thumbnail</th>
                     <th>Trailer</th>
                     <th>Tên phim</th>
@@ -64,7 +66,8 @@
                 @foreach ($movies as $movie)
                 <tr>
                     <td>
-                        <a href="{{ route('quanlyphim.edit', ['id' => $movie->maPhim]) }}" class="btn-edit">Chỉnh
+                        <a href="{{ route('quanlyphim.edit', ['id' => $movie->maPhim]) }}"
+                            class="btn btn-warning btn-edit">Chỉnh
                             sửa</a>
                         <button class="btn-delete" data-id="{{ $movie->maPhim }}">Xóa</button>
                     </td>

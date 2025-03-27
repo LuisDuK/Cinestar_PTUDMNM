@@ -31,7 +31,7 @@ class HomeController extends Controller
         // Truy vấn danh sách ngày chiếu từ bảng `lichchieuphim`
         $ngayChieu = DB::table('lichchieuphim')
             ->where('maPhim', $maPhim)
-            ->whereRaw("CONCAT(ngayChieu, ' ', gioBatDau) > NOW()") // Điều kiện giống PHP cũ
+            ->whereRaw("CONCAT(ngayChieu, ' ', suatChieu) > NOW()") // Điều kiện giống PHP cũ
             ->distinct()
             ->pluck('ngayChieu');
 
@@ -47,8 +47,8 @@ class HomeController extends Controller
         $suatChieu = DB::table('lichchieuphim')
             ->where('maPhim', $maPhim)
             ->where('ngayChieu', $ngayChieu)
-            ->whereRaw("CONCAT(ngayChieu, ' ', gioBatDau) > NOW()")
-            ->select('gioBatDau', 'loaiHinhChieu')
+            ->whereRaw("CONCAT(ngayChieu, ' ', suatChieu) > NOW()")
+            ->select('suatChieu', 'loaiChieu')
             ->distinct()
             ->get();
 
@@ -59,7 +59,7 @@ class HomeController extends Controller
         $maPhim = $request->query('maPhim');
         $ngayChieu = $request->query('ngayChieu');
         $gioBatDau = $request->query('gioBatDau');
-    
+      
         if (!$maPhim || !$ngayChieu || !$gioBatDau) {
             return response()->json(['error' => 'Thiếu dữ liệu'], 400);
         }
@@ -67,7 +67,7 @@ class HomeController extends Controller
         $maLichChieuPhim = DB::table('lichchieuphim')
             ->where('maPhim', $maPhim)
             ->where('ngayChieu', $ngayChieu)
-            ->where('gioBatDau', $gioBatDau)
+            ->where('suatChieu', $gioBatDau)
             ->value('maLichChieuPhim');
     
         if ($maLichChieuPhim) {

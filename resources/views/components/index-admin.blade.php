@@ -66,8 +66,7 @@
                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown"></a>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li>
-                                        <a class="dropdown-item"
-                                            href="{{ route('admin.profile') }}">Thông tin
+                                        <a class="dropdown-item" href="{{ route('admin.profile') }}">Thông tin
                                             cá nhân</a>
                                     </li>
                                     <li>
@@ -87,25 +86,44 @@
                 </div>
             </nav>
         </div>
+        @php
+        $userId = Auth::id();
+        $permissions = DB::table('nhanvien_chucnang')->where('maNV', $userId)->pluck('maChucNang')->toArray();
+        @endphp
         <div id="main">
             <div class="sidebar">
                 <div class="list-group">
+
                     <a href="{{ route('admin.dashboard') }}" id="dashboard"
                         class="list-group-item list-group-item-action custom-text-color">DASHBOARD</a>
+
+                    @if(in_array(1, $permissions))
                     <a href="{{ route('quanly.phim') }}" id="quanlyphim"
                         class="list-group-item list-group-item-action custom-text-color">QUẢN LÝ PHIM</a>
+                    @endif
+                    @if(in_array(3, $permissions))
                     <a href="{{ route('quanly.lichchieu') }}" id="quanlylichchieu"
                         class="list-group-item list-group-item-action custom-text-color">QUẢN LÝ LỊCH CHIẾU</a>
-                    <a href="#" id="quanlyphongchieu"
+                    @endif
+                    @if(in_array(2, $permissions))
+                    <a href="{{ route('quanly.phongchieu') }}" id="quanlyphongchieu"
                         class="list-group-item list-group-item-action custom-text-color">QUẢN LÝ PHÒNG CHIẾU</a>
+                    @endif
+
+                    @if(in_array(4, $permissions))
                     <a href="#" id="quanlyve" class="list-group-item list-group-item-action custom-text-color">QUẢN LÝ
                         VÉ</a>
+                    @endif
+                    @if(in_array(7, $permissions))
                     <a href="{{ route('quanly.nhansu') }}" id="quanlynhansu"
                         class="list-group-item list-group-item-action custom-text-color">QUẢN LÝ NHÂN SỰ</a>
+                    @endif
+                    @if(in_array(9, $permissions))
                     <a href="#" id="baocao" class="list-group-item list-group-item-action custom-text-color">BÁO CÁO</a>
-
+                    @endif
+                    @if(in_array(6, $permissions))
                     <button type="button"
-                        class="list-group-item list-group-item-action custom-text-color dropdown-toggle"
+                        class="list-group-item list-group-item-action custom-text-color dropdown-toggle drop-phanquyen"
                         data-bs-toggle="dropdown">
                         PHÂN QUYỀN
                     </button>
@@ -114,9 +132,11 @@
                                 QUẢN LÝ</a></li>
                         <li><a class="list-group-item list-group-item-action custom-text-color" href="#">TÌM THEO NHÂN
                                 VIÊN</a></li>
-                        <li><a class="list-group-item list-group-item-action custom-text-color" href="#">TÌM THEO NHÓM
+                        <li><a href="{{ route('quanly.phanquyen.chucnang') }}"
+                                class="list-group-item list-group-item-action custom-text-color" href="#">TÌM THEO NHÓM
                                 CHỨC NĂNG</a></li>
                     </ul>
+                    @endif
                 </div>
             </div>
             <div class="content">
@@ -130,7 +150,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const dropdown = document.querySelector('.dropdown-toggle');
+    const dropdown = document.querySelector('.drop-phanquyen');
     dropdown.addEventListener('click', function() {
         const dropdownMenu = dropdown.nextElementSibling;
         dropdownMenu.style.display = dropdownMenu.style.display === 'none' || dropdownMenu
