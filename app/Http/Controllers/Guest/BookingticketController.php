@@ -110,6 +110,7 @@ class BookingTicketController extends Controller
         $movieTitle = $cartData['movieTitle'];   // Tên phim
         $showtimeId = $cartData['showtimeId'];   // ID của lịch chiếu
         $totalPrice = $cartData['totalPrice'];   // Tổng số tiền
+       // dd($cartData['paymentMethod']);
         if (isset($cartData['paymentMethod'])) {
             $paymentMethod = $cartData['paymentMethod'];
         } else {

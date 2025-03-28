@@ -77,7 +77,7 @@
                                     <label for="vnpay">Thanh toán VNPAY</label>
                                 </div>
                                 <div>
-                                    <input type="radio" id="vnpay" name="payment_method" value="vnpay" required>
+                                    <input type="radio" id="paypal" name="payment_method" value="paypal" required>
                                     <label for="vnpay">Thanh toán PayPal</label>
                                 </div>
                             </div>
@@ -205,6 +205,7 @@
             event.preventDefault();
 
             let selectedPayment = document.querySelector('input[name="payment_method"]:checked').value;
+            console.log(selectedPayment);
             if (selectedPayment === "momo") {
                 this.action = "{{ route('momo.payment') }}";
             } else if (selectedPayment === "vnpay") {

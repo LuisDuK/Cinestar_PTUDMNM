@@ -28,8 +28,8 @@ class PayPalController extends Controller
                 "cancel_url" => route('paypal.cancel'),
             ]
         ]);
-        dd($order);
-
+       
+     //   dd($order);
         return redirect($order['links'][1]['href']); // Chuyển hướng tới trang thanh toán PayPal
     }
 

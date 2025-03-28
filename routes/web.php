@@ -3,9 +3,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
-use App\Http\Controllers\MoMoController;
+
 use App\Http\Controllers\PayPalController;
-use App\Http\Controllers\ScheduleController;
 
 
 /*
@@ -89,8 +88,8 @@ Route::post('/email/verification-notification', function (Request $request) {
 Route::post('/vnpay/payment','App\Http\Controllers\VNPayController@createPayment')->name('vnpay.payment');
 Route::get('/vnpay/callback', 'App\Http\Controllers\VNPayController@paymentCallback')->name('vnpay.callback');
 
-Route::post('/momo/payment', [MoMoController::class, 'createPayment'])->name('momo.payment');
-Route::get('/momo/callback', [MoMoController::class, 'paymentCallback'])->name('momo.callback');
+Route::post('/momo/payment', 'App\Http\Controllers\MoMoController@createPayment')->name('momo.payment');
+Route::get('/momo/callback', 'App\Http\Controllers\MoMoController@paymentCallback')->name('momo.callback');
 
 Route::post('/paypal/payment', [PayPalController::class, 'createPayment'])->name('paypal.payment');
 Route::get('/paypal/success', [PayPalController::class, 'successPayment'])->name('paypal.success');
