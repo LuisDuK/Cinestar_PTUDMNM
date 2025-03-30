@@ -138,11 +138,15 @@ Route::get('/admin/quanlyphanquyen/quyencanhan/{employeeID}', 'App\Http\Controll
 Route::post('/admin/quanlyphanquyen/assign', 'App\Http\Controllers\Admin\RoleController@addPermission')->middleware(['admin', 'check.permission:7'])->name('quanlyphanquyen.assign');
 Route::delete('/admin/quanlyphanquyen/quyencanhan/xoa/{employeeID}/{permessionId}', 'App\Http\Controllers\Admin\RoleController@destroy')->middleware(['admin', 'check.permission:7']);
 
-
 Route::middleware(['auth', 'check.permission:2'])->group(function () {
     Route::get('/admin/phongchieu', 'App\Http\Controllers\Admin\RoomController@viewRoomList')->name('quanly.phongchieu');
     Route::post('/admin/phongchieu', 'App\Http\Controllers\Admin\RoomController@store')->name('quanlyphongchieu.store');
     Route::put('/admin/phongchieu/{id}', 'App\Http\Controllers\Admin\RoomController@update')->name('quanlyphongchieu.update');
     Route::delete('/admin/phongchieu/{id}', 'App\Http\Controllers\Admin\RoomController@destroy')->name('quanlyphongchieu.destroy');
+});
+Route::middleware(['auth', 'check.permission:9'])->group(function () {
+Route::get('/report', 'App\Http\Controllers\Admin\ReportController@index')->name('report.index');
+Route::get('/report/data', 'App\Http\Controllers\Admin\ReportController@getData')->name('report.data');
+Route::get('/movies', 'App\Http\Controllers\Admin\ReportController@getMovies')->name('report.movies');
 });
 /*----endAdmin----*/

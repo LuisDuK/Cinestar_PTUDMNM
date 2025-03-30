@@ -119,7 +119,8 @@
                         class="list-group-item list-group-item-action custom-text-color">QUẢN LÝ NHÂN SỰ</a>
                     @endif
                     @if(in_array(9, $permissions))
-                    <a href="#" id="baocao" class="list-group-item list-group-item-action custom-text-color">BÁO CÁO</a>
+                    <a href="{{ route('report.index') }}" id="baocao"
+                        class="list-group-item list-group-item-action custom-text-color">BÁO CÁO</a>
                     @endif
                     @if(in_array(6, $permissions))
                     <button type="button"
