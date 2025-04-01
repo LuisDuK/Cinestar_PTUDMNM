@@ -54,11 +54,11 @@
 
     }
     </style>
-    <div class="movies-container" style="height:700px;">
+    <div class="movies-container" style="height:700px; justify-content: center;">
         <h1 class="movies-title text-center">Quản lý phòng chiếu</h1>
 
         <!-- Nút mở Modal Thêm -->
-        <button class="movies-btn movies-add" data-bs-toggle=" modal" data-bs-target="#addRoomModal"
+        <button class="movies-btn movies-add" data-bs-toggle="modal" data-bs-target="#addRoomModal"
             style="margin-bottom:10px;">Thêm phòng
             chiếu</button>
 
@@ -66,13 +66,14 @@
         <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
-        <table id="room-table" class="table table-striped">
+        <table id="room-table" class="table table-striped" style="text-align:center;">
             <thead>
                 <tr>
                     <th>Mã Phòng</th>
                     <th>Tên Phòng</th>
                     <th>Số Ghế</th>
                     <th>Tình trạng</th>
+                    <th style="width: 15%;">Số hàng</th>
                     <th>Hành động</th>
                 </tr>
             </thead>
@@ -83,12 +84,13 @@
                     <td>{{ $room->tenPhongChieu }}</td>
                     <td>{{ $room->soLuongGhe }}</td>
                     <td>{{ $room->trangThaiPhongChieu }}</td>
+                    <td>{{ $room->soHang }}</td>
                     <td>
                         <!-- Nút mở Modal Sửa -->
                         <button class="btn btn-warning btn-sm edit-room-btn" data-bs-toggle="modal"
                             data-bs-target="#editRoomModal" data-id="{{ $room->maPhongChieu }}"
                             data-name="{{ $room->tenPhongChieu }}" data-seats="{{ $room->soLuongGhe }}"
-                            data-status="{{ $room->trangThaiPhongChieu }}">
+                            data-status="{{ $room->trangThaiPhongChieu }}" data-rows="{{ $room->soHang }}">
                             Sửa
                         </button>
 
@@ -135,6 +137,10 @@
                                 <option value="Bảo trì">Bảo trì</option>
                             </select>
                         </div>
+                        <div class="mb-3">
+                            <label class="form-label">Số hàng:</label>
+                            <input type="number" name="soHang" class="form-control" min="1" required>
+                        </div>
                         <button type="submit" class="btn btn-success">Thêm</button>
                     </form>
                 </div>
@@ -172,6 +178,11 @@
                                 <option value="maintenance">Bảo trì</option>
                             </select>
                         </div>
+                        <div class="mb-3">
+                            <label class="form-label">Số hàng:</label>
+                            <input type="number" id="editRoomRows" name="soHang" class="form-control" min="1" required>
+                        </div>
+
                         <button type="submit" class="btn btn-success">Cập nhật</button>
                     </form>
                 </div>
@@ -202,11 +213,14 @@
             let roomName = $(this).data("name");
             let roomSeats = $(this).data("seats");
             let roomStatus = $(this).data("status");
+            let roomRows = $(this).data("rows"); // Dữ liệu số hàng
 
             $("#editRoomId").val(roomId);
             $("#editRoomName").val(roomName);
             $("#editRoomSeats").val(roomSeats);
             $("#editRoomStatus").val(roomStatus);
+            $("#editRoomRows").val(roomRows); // Đổ dữ liệu số hàng
+
             let updateUrl = "{{ route('quanlyphongchieu.update', ':id') }}".replace(':id', roomId);
             $("#editRoomForm").attr("action", updateUrl);
         });

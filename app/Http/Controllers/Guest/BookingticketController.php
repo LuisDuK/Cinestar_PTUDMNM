@@ -55,7 +55,7 @@ class BookingTicketController extends Controller
             ->join('phongchieuphim', 'phongchieuphim.maPhongChieu', '=', 'ghe.maPhongChieu')
             ->join('lichchieuphim', 'lichchieuphim.maPhongChieuPhim', '=', 'phongchieuphim.maPhongChieu')
             ->where('lichchieuphim.maLichChieuPhim', $maLichChieuPhim)
-            ->select('ghe.maGhe', 'ghe.soGhe', 'ghe.trangThai', 'ghe.soHang')
+            ->select('ghe.soGhe', 'ghe.trangThai', 'ghe.soHang')
             ->get();
             $movie = DB::table('phim')
             ->join('lichchieuphim', 'lichchieuphim.maphim', '=', 'phim.maphim')
@@ -71,7 +71,7 @@ class BookingTicketController extends Controller
             )
             ->first();
 
-        // Lấy thông tin người dùng từ session (nếu đã đăng nhập)
+        // Lấy thông tin người dùng từ msession (nếu đã đăng nhập)
         $user = Auth::user();
        // dd($movie);
         return view('guest.booking.select_chair', compact('seats','movie', 'user','maLichChieuPhim'));

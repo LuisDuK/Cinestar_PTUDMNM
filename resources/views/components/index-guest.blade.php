@@ -143,136 +143,135 @@
             </div>
         </header>
         <main class="app-main">{{$slot}}</main>
-        <footer class="footer">
-            <div class="footer-container">
-                <div class="footer-top" style="display:flow;">
-                    <div class="footer-cinestar" style="float:left;">
-                        <div class="logo">
-                            <img src="{{ asset("Resources/Images/DefaultPage/logocinestar.webp") }}"
-                                alt="Cinestar Logo" />
-                        </div>
-                        <h4>BE HAPPY, BE A STAR</h4>
 
-                        <div>
-                            <button class="btn yellow" id="footer-booking-ticket">
-                                <b>ĐẶT VÉ</b>
-                            </button>
-
-                        </div>
-                        <div class="footer-social-media">
-                            <a href="#">
-                                <img src="{{ asset("Resources/Images/DefaultPage/facebook-logo.png") }}" alt="Facebook"
-                                    class="image_footer" />
-                            </a>
-                            <a href="#">
-                                <img src="{{ asset("Resources/Images/DefaultPage/youtube.png") }}" alt="Youtube"
-                                    class="image_footer" />
-                            </a>
-                            <a href="#">
-                                <img src="{{ asset("Resources/Images/DefaultPage/tiktok.png") }}" alt="Tiktok"
-                                    class="image_footer" />
-                            </a>
-                            <a href="#">
-                                <img src="{{ asset("Resources/Images/DefaultPage/icons8-zalo-48.png") }}" alt="Zalo"
-                                    class="image_footer" />
-                            </a>
-                        </div>
-                        <div class="footer-language">
-                            Ngôn ngữ:
-                            <img src="{{ asset("Resources/Images/DefaultPage/footer-vietnam.svg") }}"
-                                alt="Cinestar Logo" class="image_footer" />
-                            VN
-                        </div>
+    </div>
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-top" style="display:flow;">
+                <div class="footer-cinestar" style="float:left;">
+                    <div class="logo">
+                        <img src="{{ asset("Resources/Images/DefaultPage/logocinestar.webp") }}" alt="Cinestar Logo" />
                     </div>
-                    <div class="footer-links" style="float:right;">
-                        <div class="footer-column">
-                            <h3>TÀI KHOẢN</h3>
-                            <ul>
-                                <li>Đăng nhập</li>
-                                <li>Đăng ký</li>
-                                <li>Membership</li>
-                            </ul>
-                            <h3>XEM PHIM</h3>
-                            <ul>
-                                <li>Phim đang chiếu</li>
-                                <li>Phim sắp chiếu</li>
-                                <li>Suất chiếu đặc biệt</li>
-                            </ul>
-                        </div>
-                        <div class="footer-column">
-                            <h3>THUÊ SỰ KIỆN</h3>
-                            <ul>
-                                <li>Thuê rạp</li>
-                                <li>Các loại hình cho thuê khác</li>
-                            </ul>
-                            <h3>CINESTAR</h3>
-                            <ul>
-                                <li>Giới thiệu</li>
-                                <li>Liên hệ</li>
-                                <li>Tuyển dụng</li>
-                            </ul>
-                        </div>
+                    <h4>BE HAPPY, BE A STAR</h4>
 
-                        <div class="footer-column">
-                            <h3>DỊCH VỤ KHÁC</h3>
-                            <ul>
-                                <li>Nhà hàng</li>
-                                <li>Kidzone</li>
-                                <li>Bowling</li>
-                                <li>Billiards</li>
-                                <li>Gym</li>
-                                <li>Nhà hát Opera</li>
-                                <li>Coffee</li>
-                            </ul>
-                        </div>
-                        <div class="footer-column">
-                            <h3>HỆ THỐNG RẠP</h3>
-                            <ul>
-                                <li>Tất cả hệ thống rạp</li>
-                                <li>Cinestar Quốc Thanh</li>
-                                <li>Cinestar Hai Bà Trưng (TP.HCM)</li>
-                                <li>Cinestar Sinh Viên (Bình Dương)</li>
-                                <li>Cinestar Mỹ Tho</li>
-                                <li>Cinestar Kiên Giang</li>
-                                <li>Cinestar Lâm Đồng</li>
-                                <li>Cinestar Đà Lạt</li>
-                                <li>Cinestar Huế</li>
-                            </ul>
-                        </div>
+                    <div>
+                        <button class="btn yellow" id="footer-booking-ticket">
+                            <b>ĐẶT VÉ</b>
+                        </button>
+
+                    </div>
+                    <div class="footer-social-media">
+                        <a href="#">
+                            <img src="{{ asset("Resources/Images/DefaultPage/facebook-logo.png") }}" alt="Facebook"
+                                class="image_footer" />
+                        </a>
+                        <a href="#">
+                            <img src="{{ asset("Resources/Images/DefaultPage/youtube.png") }}" alt="Youtube"
+                                class="image_footer" />
+                        </a>
+                        <a href="#">
+                            <img src="{{ asset("Resources/Images/DefaultPage/tiktok.png") }}" alt="Tiktok"
+                                class="image_footer" />
+                        </a>
+                        <a href="#">
+                            <img src="{{ asset("Resources/Images/DefaultPage/icons8-zalo-48.png") }}" alt="Zalo"
+                                class="image_footer" />
+                        </a>
+                    </div>
+                    <div class="footer-language">
+                        Ngôn ngữ:
+                        <img src="{{ asset("Resources/Images/DefaultPage/footer-vietnam.svg") }}" alt="Cinestar Logo"
+                            class="image_footer" />
+                        VN
                     </div>
                 </div>
-                <br style="clear:both;">
-                <hr />
-                <div class="footer-bot">
-                    <div class="copyright">© 2023 Cinestar. All rights reserved.</div>
-                    <div class="links">
-                        <a href="#">Chính sách bảo mật</a>
-                        <a href="#">Tin điện ảnh</a>
-                        <a href="#">Hỏi và đáp</a>
+                <div class="footer-links" style="float:right;">
+                    <div class="footer-column">
+                        <h3>TÀI KHOẢN</h3>
+                        <ul>
+                            <li>Đăng nhập</li>
+                            <li>Đăng ký</li>
+                            <li>Membership</li>
+                        </ul>
+                        <h3>XEM PHIM</h3>
+                        <ul>
+                            <li>Phim đang chiếu</li>
+                            <li>Phim sắp chiếu</li>
+                            <li>Suất chiếu đặc biệt</li>
+                        </ul>
                     </div>
-                </div>
-                <div class="footer-info">
-                    <div class="footer-content">
-                        <div class="footer-notice">
-                            <img src="{{ asset("Resources/Images/DefaultPage/bocongthuong.webp") }}" alt="Kidzone" />
-                        </div>
-                        <div class="footer-details">
-                            <p>
-                                CÔNG TY CỔ PHẦN GIẢI TRÍ PHÁT HÀNH PHIM - RẠP CHIẾU PHIM NGÔI
-                                SAO<br />
-                                ĐỊA CHỈ: 135 HAI BÀ TRƯNG, PHƯỜNG BẾN NGHÉ, QUẬN 1, TP.HCM<br />
-                                GIẤY CNĐKDN SỐ: 0312742744, ĐĂNG KÝ LẦN ĐẦU NGÀY
-                                18/04/2014,<br />
-                                ĐĂNG KÝ THAY ĐỔI LẦN THỨ 2 NGÀY 15/09/2014, CẤP BỞI SỞ KH&ĐT
-                                TP.HCM
-                            </p>
-                        </div>
+                    <div class="footer-column">
+                        <h3>THUÊ SỰ KIỆN</h3>
+                        <ul>
+                            <li>Thuê rạp</li>
+                            <li>Các loại hình cho thuê khác</li>
+                        </ul>
+                        <h3>CINESTAR</h3>
+                        <ul>
+                            <li>Giới thiệu</li>
+                            <li>Liên hệ</li>
+                            <li>Tuyển dụng</li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-column">
+                        <h3>DỊCH VỤ KHÁC</h3>
+                        <ul>
+                            <li>Nhà hàng</li>
+                            <li>Kidzone</li>
+                            <li>Bowling</li>
+                            <li>Billiards</li>
+                            <li>Gym</li>
+                            <li>Nhà hát Opera</li>
+                            <li>Coffee</li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>HỆ THỐNG RẠP</h3>
+                        <ul>
+                            <li>Tất cả hệ thống rạp</li>
+                            <li>Cinestar Quốc Thanh</li>
+                            <li>Cinestar Hai Bà Trưng (TP.HCM)</li>
+                            <li>Cinestar Sinh Viên (Bình Dương)</li>
+                            <li>Cinestar Mỹ Tho</li>
+                            <li>Cinestar Kiên Giang</li>
+                            <li>Cinestar Lâm Đồng</li>
+                            <li>Cinestar Đà Lạt</li>
+                            <li>Cinestar Huế</li>
+                        </ul>
                     </div>
                 </div>
             </div>
-        </footer>
-    </div>
-
+            <br style="clear:both;">
+            <hr />
+            <div class="footer-bot">
+                <div class="copyright">© 2023 Cinestar. All rights reserved.</div>
+                <div class="links">
+                    <a href="#">Chính sách bảo mật</a>
+                    <a href="#">Tin điện ảnh</a>
+                    <a href="#">Hỏi và đáp</a>
+                </div>
+            </div>
+            <div class="footer-info">
+                <div class="footer-content">
+                    <div class="footer-notice">
+                        <img src="{{ asset("Resources/Images/DefaultPage/bocongthuong.webp") }}" alt="Kidzone" />
+                    </div>
+                    <div class="footer-details">
+                        <p>
+                            CÔNG TY CỔ PHẦN GIẢI TRÍ PHÁT HÀNH PHIM - RẠP CHIẾU PHIM NGÔI
+                            SAO<br />
+                            ĐỊA CHỈ: 135 HAI BÀ TRƯNG, PHƯỜNG BẾN NGHÉ, QUẬN 1, TP.HCM<br />
+                            GIẤY CNĐKDN SỐ: 0312742744, ĐĂNG KÝ LẦN ĐẦU NGÀY
+                            18/04/2014,<br />
+                            ĐĂNG KÝ THAY ĐỔI LẦN THỨ 2 NGÀY 15/09/2014, CẤP BỞI SỞ KH&ĐT
+                            TP.HCM
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
