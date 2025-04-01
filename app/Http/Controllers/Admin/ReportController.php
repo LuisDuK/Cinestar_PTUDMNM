@@ -21,50 +21,49 @@ class ReportController extends Controller
         $month = $request->query('month');
         $movieId = $request->query('movie');
     
-        $revenueByDay = DB::table('chitietdatve')
+        // Tạo query chung
+        $queryRevenueByDay = DB::table('chitietdatve')
             ->join('lichchieuphim', 'chitietdatve.id_lich_chieu', '=', 'lichchieuphim.maLichChieuPhim')
             ->select(DB::raw('DATE(ngayChieu) as day, SUM(so_tien) as revenue'))
             ->whereMonth('ngayChieu', date('m', strtotime($month)))
             ->whereYear('ngayChieu', date('Y', strtotime($month)))
-            ->groupBy('day')
-            ->get();
+            ->groupBy('day');
     
-        $revenueByMovie = DB::table('chitietdatve')
+        $queryRevenueByMovie = DB::table('chitietdatve')
             ->join('lichchieuphim', 'chitietdatve.id_lich_chieu', '=', 'lichchieuphim.maLichChieuPhim')
             ->join('phim', 'lichchieuphim.maPhim', '=', 'phim.maPhim')
             ->select('phim.ten as movie', DB::raw('SUM(so_tien) as revenue'))
             ->whereMonth('ngayChieu', date('m', strtotime($month)))
             ->whereYear('ngayChieu', date('Y', strtotime($month)))
-            ->groupBy('movie')
-            ->get();
+            ->groupBy('movie');
     
-        $revenueByHour = DB::table('chitietdatve')
+        $queryRevenueByHour = DB::table('chitietdatve')
             ->join('lichchieuphim', 'chitietdatve.id_lich_chieu', '=', 'lichchieuphim.maLichChieuPhim')
             ->select(DB::raw('suatChieu, SUM(so_tien) as revenue'))
             ->whereMonth('ngayChieu', date('m', strtotime($month)))
             ->whereYear('ngayChieu', date('Y', strtotime($month)))
-            ->groupBy('suatChieu')
-            ->get();
+            ->groupBy('suatChieu');
     
-        $revenueByShowtime = [];
+        // Nếu có movieId, lọc theo phim
         if ($movieId) {
-            $revenueByShowtime = DB::table('chitietdatve')
-                ->join('lichchieuphim', 'chitietdatve.id_lich_chieu', '=', 'lichchieuphim.maLichChieuPhim')
-                ->select(DB::raw('WEEK(ngayChieu) as week, SUM(so_tien) as revenue'))
-                ->where('lichchieuphim.maPhim', $movieId)
-                ->whereMonth('ngayChieu', date('m', strtotime($month)))
-                ->whereYear('ngayChieu', date('Y', strtotime($month)))
-                ->groupBy('week')
-                ->get();
+            $queryRevenueByDay->where('lichchieuphim.maPhim', $movieId);
+            $queryRevenueByMovie->where('lichchieuphim.maPhim', $movieId);
+            $queryRevenueByHour->where('lichchieuphim.maPhim', $movieId);
         }
+    
+        $revenueByDay = $queryRevenueByDay->get();
+        $revenueByMovie = $queryRevenueByMovie->get();
+        $revenueByHour = $queryRevenueByHour->get();
+    
+      
     
         return response()->json([
             'revenueByDay' => $revenueByDay,
             'revenueByMovie' => $revenueByMovie,
             'revenueByHour' => $revenueByHour,
-            'revenueByShowtime' => $revenueByShowtime
         ]);
     }
+    
     
     public function getMovies() {
         $movies = DB::table('phim')->select('maPhim as id', 'ten as name')->get();

@@ -181,7 +181,7 @@
                 },
                 search: "Tìm kiếm:",
                 lengthMenu: "Hiển thị _MENU_ ",
-                info: "Hiển thị _START_ đến _END_ của _TOTAL_ mục"
+                info: "Hiển thị _START_ đến _END_ của _TOTAL_ mục",
             }
         });
         $('#permission-table').DataTable({
@@ -195,7 +195,7 @@
                 },
                 search: "Tìm kiếm:",
                 lengthMenu: "Hiển thị _MENU_ ",
-                info: "Hiển thị _START_ đến _END_ của _TOTAL_ mục"
+                info: "Hiển thị _START_ đến _END_ của _TOTAL_ mục",
             }
         });
     });

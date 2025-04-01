@@ -27,7 +27,6 @@ class CreateUsersTable extends Migration
             $table->tinyInteger('role')->default(0);  // Vai trò (0 = user, 1 = admin)
             $table->timestamps();
             $table->rememberToken();
-            $table->timestamps();
         });
     }
 

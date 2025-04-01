@@ -151,6 +151,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+
     const dropdown = document.querySelector('.drop-phanquyen');
     dropdown.addEventListener('click', function() {
         const dropdownMenu = dropdown.nextElementSibling;
