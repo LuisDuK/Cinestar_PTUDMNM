@@ -1,0 +1,42 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #0d2538;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+}
+
+.product-card {
+    background: #1a1c38;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+}
+
+.quantity-controls button {
+    background: #00aaff;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    margin: 5px;
+    cursor: pointer;
+}
+
+#checkout-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #1a1c38;
+    padding: 20px;
+    border-radius: 10px;
+    display: none;
+    width: 90%;
+    max-width: 400px;
+}
