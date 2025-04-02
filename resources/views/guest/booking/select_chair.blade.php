@@ -28,7 +28,10 @@
                             </td>
                             @for ($j = 1; $j <= $seat->soGhe; $j++)
                                 <td id="col">
-                                    <div id="{{ $alphabet[$i - 1] . $j }}"></div>
+                                    <div id="{{ $alphabet[$i - 1] . $j }}" style="justify-content: center;
+    font-size: 15px;
+    font-weight: bold;">
+                                        {{ $alphabet[$i - 1] . $j }} </div>
                                 </td>
                                 @endfor
                         </tr>
