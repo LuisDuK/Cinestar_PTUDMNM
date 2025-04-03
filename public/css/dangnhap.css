@@ -1,0 +1,105 @@
+/* Reset CSS */
+
+.container {
+    max-width: 500px;
+    padding: 0 20px;
+    color: black;
+    background-color: white;
+    width: 70%;
+    margin: 50px;
+}
+.gender-group {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Khoảng cách giữa các phần tử */
+}
+
+.gender-group input {
+    margin: 0 5px 0 0; /* Giúp căn chỉnh radio với label */
+}
+.custom-checkbox {
+    width: 10px;
+    height: 10px;
+    transform: scale(1.5); /* Tăng kích thước lên 1.5 lần */
+    cursor: pointer;
+}
+.tabs {
+    display: flex;
+    background-color: #000;
+}
+.tab a {
+    text-decoration: none;
+    color: white;
+}
+.tab .active a {
+    text-decoration: none;
+    color: black;
+}
+.tab {
+    flex: 1;
+    text-align: center;
+    color: #fff;
+    padding: 10px 0;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.tab.active {
+    background-color: #fff;
+    color: #000;
+}
+
+.form-container {
+    padding: 20px;
+    display: block;
+}
+
+.hidden {
+    display: none;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+span {
+    color: red;
+}
+
+.btn-dangnhap {
+    width: 100%;
+    padding: 10px;
+    background-color: #ffcc00;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.btn-dangnhap:hover {
+    background-color: #e6b800;
+}
+
+.forgot-password {
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+.forgot-password a,
+p a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+}

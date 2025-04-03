@@ -1,0 +1,44 @@
+body {
+    background-color: #2c044d; /* Màu tím đậm trùng với nền ngoài */
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    padding: 20px;
+}
+
+.product-card {
+    background-color: #3a0b5b; /* Màu nền của thẻ sản phẩm */
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.quantity button {
+    background-color: #5e0f88; /* Nút điều chỉnh số lượng */
+    color: #ffffff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.quantity button:hover {
+    background-color: #8a1bb8;
+}
+
+.btn-dat-bap-nuoc {
+    background-color: #8a1bb8;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-dat-bap-nuoc:hover {
+    background-color: #b03fe3;
+}

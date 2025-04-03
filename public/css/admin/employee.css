@@ -1,0 +1,280 @@
+.pagination {
+  text-align: center;
+}
+
+.pagination a {
+  margin: 0 5px;
+  padding: 5px 10px;
+  text-decoration: none;
+  border: 1px solid #ddd;
+}
+
+.pagination a.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+.employee-modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 600px;
+  width: 40%;
+  margin-top: 240px;
+  overflow: auto;
+  background-color: rgb(253, 253, 253);
+  color: black;
+  border: solid 1px black;
+  margin-left: 140px;
+  padding-left: 30px;
+  padding-top: 10px;
+  transform: translate(-50%, -50%);
+  padding-right: 10px;
+  padding-bottom: 10px;
+}
+.modal-overlay {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 999; /* Lower than modal */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4); /* Black with transparency */
+}
+.employee-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.employee-modal-header h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.employee-modal-close {
+  font-size: 24px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  outline: none;
+}
+
+.employee-modal .employee-modal-body {
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 20px 0;
+}
+
+.employee-modal .employee-modal-footer {
+  text-align: right;
+  margin-top: 20px;
+}
+
+.employee-modal .employee-modal-footer .employee-modal-btn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.employee-modal-btn-edit {
+  background-color: #007bff;
+  color: white;
+}
+
+.employee-modal-btn-close {
+  background-color: #f44336;
+  color: white;
+}
+.employee-modal-body form label {
+  display: block;
+  margin: 10px 0 5px;
+  font-weight: bold;
+}
+.private-information form input {
+  width: 70%;
+  padding: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.employee-modal-body form input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.employee-modal-body form button {
+  margin-right: 10px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.employee-modal-body form button:hover {
+  background-color: #0056b3;
+}
+/* General styles for the notification modal */
+.notification-modal {
+  display: none; /* Default hide modal */
+  position: fixed;
+  top: 0;
+  left: 20px;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.notification-modal-content {
+  background: #fff;
+  margin: 15% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 50%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+.notification-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  color: #333;
+}
+
+.notification-modal p {
+  margin: 10px 0;
+  font-size: 16px;
+}
+/*add - employee - modal */
+/* Basic Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Modal container */
+.add-employee-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* Overlay background */
+  z-index: 1000;
+  overflow: auto;
+}
+
+/* Modal content */
+.add-employee-content {
+  background: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 500px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+/* Close button */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Overlay effect */
+.add-employee-modal .modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* Overlay background */
+  z-index: 999;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .add-employee--content {
+    width: 90%;
+  }
+}
+.submit-employee {
+  background-color: #22c55e;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.375rem;
+}
+.add-employee-content input[type="radio"] {
+  display: block;
+}
+.employee-flex input[type="radio"] {
+  display: block;
+  width: 15px;
+  margin-top: 10px;
+}
+
+.employee-table {
+  min-width: 100%;
+  background-color: white;
+  border-collapse: collapse;
+}
+.employee-table thead {
+  background-color: #ffc8c8;
+  height: 80px;
+  font-size: 20px;
+}
+
+.employee-table th,
+.employee-table td {
+  padding: 0.5rem; /* py-2 px-4 */
+  border-bottom: 1px solid #e5e7eb; /* border color */
+  text-align: center;
+  height: 70px;
+  justify-items: center;
+}
+
+.employee-table td:nth-child(1) {
+  width: 10%; /* Chia tỷ lệ 15% cho cột đầu tiên */
+}
+.private-information input[type="radio"] {
+  display: block;
+  width: 15px;
+  margin-top: 10px;
+}
+.add-employee-content input[type="radio"] {
+  display: block;
+  width: 15px;
+  margin-top: 10px;
+}
+.employee-infor .add-movie-form-group {
+  justify-content: left;
+}
+.status-active {
+  color: green;
+}
+
+.status-inactive {
+  color: red;
+}
