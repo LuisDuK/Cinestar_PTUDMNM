@@ -35,7 +35,7 @@
     }
     </style>
     <div class="movies-container">
-        <h1 class="movies-title text-center">DANH SÁCH LỊCH CHIẾU</h1>
+        <h1 class="movies-title text-center">Danh sách lịch chiếu</h1>
 
         @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>

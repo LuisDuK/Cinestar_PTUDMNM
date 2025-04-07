@@ -38,7 +38,7 @@
     }
     </style>
     <div class="movies-container">
-        <h1 class="movies-title text-center">DANH SÁCH PHIM</h1>
+        <h1 class="movies-title text-center">Danh sách phim</h1>
 
         <div class="movies-controls">
 
