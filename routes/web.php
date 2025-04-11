@@ -24,6 +24,8 @@ Route::get('/phim/dang-chieu', 'App\Http\Controllers\Guest\HomeController@movies
 Route::get('/phim/sap-chieu', 'App\Http\Controllers\Guest\HomeController@movieupcoming')->name('phimsapchieu');
 Route::get('/dat-ve/{maPhim}', 'App\Http\Controllers\Guest\HomeController@index')->name('datve');
 
+Route::get('/timphim', 'App\Http\Controllers\Guest\HomeController@search')->name('timphim');
+Route::get('/api/movies/suggest', 'App\Http\Controllers\Guest\HomeController@suggest');
 /*Thông tin*/
 Route::get('/gioithieu', 'App\Http\Controllers\Guest\InformationController@showAbout')->name('gioithieu');
 Route::get('/tochucsukien', 'App\Http\Controllers\Guest\InformationController@showEventorganization')->name('tochucsukien');
@@ -59,11 +61,11 @@ Route::get('/auth', 'App\Http\Controllers\Guest\AuthController@viewauth')->name(
 
 Route::get('/auth/login', function () {
     return view('auth.Guest.login_content');
-})->name('authlogin');;
+})->name('authlogin');
 
 Route::get('/auth/register', function () {
     return view('auth.Guest.register_content');
-})->name('authregister');;
+})->name('authregister');
 Route::get('/login', function () {
     abort(404); 
 })->name('login');

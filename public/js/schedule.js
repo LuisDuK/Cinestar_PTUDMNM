@@ -225,10 +225,6 @@ document.addEventListener("DOMContentLoaded", () => {
         button.addEventListener("click", removeMovie);
     });
 
-    const saveButton = document.querySelector(".btn-save-schedule");
-    if (saveButton) {
-        saveButton.addEventListener("click", saveSchedule);
-    }
     document.querySelectorAll(".schedule-cinema").forEach((dropzone) => {
         dropzone.addEventListener("dragover", function (event) {
             event.preventDefault(); // Cho phép thả

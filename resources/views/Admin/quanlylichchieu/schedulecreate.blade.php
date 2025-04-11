@@ -13,12 +13,9 @@
         align-items: center;
         justify-content: center;
         height: 30px;
-        /* Đặt chiều cao cố định */
         min-width: 40px;
-        /* Đảm bảo chiều rộng tối thiểu */
         padding: 8px 12px;
         border-radius: 5px;
-        /* Bo góc cho đẹp */
     }
     </style>
     <div class="add-schedule-container" style="height: 700px;">
