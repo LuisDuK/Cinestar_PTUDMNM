@@ -14,6 +14,25 @@ class HomeController extends Controller
         $phimSapChieu = DB::table("Phim")->where('trangThai', 'Sắp chiếu')->get();
         return view('guest.home', compact('phimDangChieu', 'phimSapChieu'));
     }
+    public function search(Request $request)
+    {
+        $query = $request->query('q');
+
+        $results = DB::table("Phim")->where('ten', 'like', "%$query%")->get();
+
+        return view('search.results', compact('results', 'query'));
+    }
+    public function suggest(Request $request)
+    {
+        $keyword = $request->query('keyword');
+    
+        $movies = DB::table("Phim")->where('ten', 'like', '%' . $keyword . '%')
+                      ->limit(5)
+                      ->get(['maPhim', 'ten']); // Trả về id + tên
+    
+        return response()->json($movies);
+    }
+    
     public function movieshowing(){
         $phimDangChieu = DB::table("Phim")->where('trangThai', 'Đang chiếu')->get();
         return view('guest.movies_showing', compact('phimDangChieu'));

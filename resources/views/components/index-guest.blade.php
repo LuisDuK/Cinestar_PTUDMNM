@@ -40,6 +40,60 @@
         margin-right: 5px;
         margin-bottom: 2px;
     }
+
+    .search-container {
+        position: relative;
+        width: 300px;
+    }
+
+    .search-form .search {
+        display: flex;
+        position: relative;
+        width: 100%;
+    }
+
+    .search input[type="text"] {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        border-radius: 6px 0 0 6px;
+        outline: none;
+    }
+
+    .search .search-btn {
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        background-color: #f5f5f5;
+        border-left: none;
+        border-radius: 0 6px 6px 0;
+        cursor: pointer;
+    }
+
+    .suggestions-box {
+
+        border-top: none;
+        max-height: 250px;
+        overflow-y: auto;
+        background: white;
+        position: absolute;
+        border-radius: 30%;
+        width: 100%;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        border-radius: 6px 6px 6px 6px;
+    }
+
+    .suggestions-box div {
+        padding: 10px 12px;
+        font-size: 14px;
+        color: #333;
+        cursor: pointer;
+        transition: background 0.2s ease;
+    }
+
+    .suggestions-box div:hover {
+        background-color: rgb(181, 178, 178);
+    }
     </style>
 
 </head>
@@ -61,10 +115,15 @@
                         <b>ĐẶT VÉ NGAY</b>
                     </button>
                 </div>
-                <div class="search">
-                    <input type="text" placeholder="Tìm phim, rạp" />
-                    <button class="search-btn">🔍</button>
-                </div>
+                <form class="search-form" autocomplete="off">
+                    <div class="search-container">
+                        <div class="search">
+                            <input type="text" id="searchInput" placeholder="Tìm phim, rạp...">
+                            <button type="submit" class="search-btn">🔍</button>
+                        </div>
+                        <div id="suggestions" class="suggestions-box"></div>
+                    </div>
+                </form>
                 <div class="user-actions">
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
@@ -279,6 +338,33 @@
 $(document).ready(function() {
     $("#btn-booking-now").click(function() {
         window.location.href = "{{ route('homeindex') }}";
+    });
+    $('#searchInput').on('input', function() {
+        let keyword = $(this).val();
+
+        if (keyword.length < 1) {
+            $('#suggestions').empty();
+            return;
+        }
+
+        $.ajax({
+            url: '/api/movies/suggest',
+            method: 'GET',
+            data: {
+                keyword: keyword
+            },
+            success: function(data) {
+                let html = '';
+                data.forEach(movie => {
+                    html +=
+                        `<div onclick="window.location.href='/phim/${movie.maPhim}'">${movie.ten}</div>`;
+                });
+                $('#suggestions').html(html);
+            },
+            error: function() {
+                $('#suggestions').empty();
+            }
+        });
     });
 });
 </script>

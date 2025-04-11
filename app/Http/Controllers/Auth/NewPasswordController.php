@@ -55,7 +55,7 @@ class NewPasswordController extends Controller
         );
 
         if ($status == Password::PASSWORD_RESET) {
-            return redirect()->route('login')->with('success', 'Mật khẩu đã được thay đổi thành công! Vui lòng đăng nhập lại.');
+            return redirect()->route('auth')->with('success', 'Mật khẩu đã được thay đổi thành công! Vui lòng đăng nhập lại.');
         }
         // If the password was successfully reset, we will redirect the user back to
         // the application's home authenticated view. If there is an error we can
