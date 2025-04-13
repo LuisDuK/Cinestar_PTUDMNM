@@ -22,10 +22,6 @@
                     @foreach ($seats as $seat)
                     @for ($i = 1; $i <= $seat->soHang; $i++)
                         <tr id="row" value="{{ $i }}">
-                            <!-- Nhãn hàng ghế -->
-                            <td class="row-label">
-                                {{ $alphabet[$i - 1] }}
-                            </td>
                             @for ($j = 1; $j <= $seat->soGhe; $j++)
                                 <td id="col">
                                     <div id="{{ $alphabet[$i - 1] . $j }}" style="justify-content: center;

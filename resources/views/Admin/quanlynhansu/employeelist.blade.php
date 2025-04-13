@@ -86,22 +86,22 @@
         <div class="movies-controls" style="margin-bottom:10px;">
 
             <button type="button" class="movies-btn movies-add" data-bs-toggle="modal" data-bs-target="#addNewModal">
-                Add New
+                Thêm nhân sự
             </button>
         </div>
         @if(session('success'))
-        <div class="alert alert-success">
+        <div class="alert alert-success" style="background-color: white; ">
             {{ session('success') }}
         </div>
         @endif
 
         @if(session('error'))
-        <div class="alert alert-danger">
+        <div class="alert alert-danger" style="background-color: white;">
             {{ session('error') }}
         </div>
         @endif
         @if ($errors->has('new_password'))
-        <div class="alert alert-danger">
+        <div class="alert alert-danger" style="background-color: white; ">
             <ul>
                 <li>{{ $errors->first('new_password') }}</li>
             </ul>
@@ -161,6 +161,14 @@
                             data-bs-target="#changePasswordModal{{ $employee->id }}">
                             Đổi mật khẩu
                         </button>
+                        <form action="{{ route('quanlynhansu.destroy', $employee->id) }}" method="POST"
+                            onsubmit="return confirm('Bạn có chắc muốn xóa nhân viên này không?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm w-100">
+                                Xóa nhân viên
+                            </button>
+                        </form>
                     </td>
                 </tr>
                 @endforeach

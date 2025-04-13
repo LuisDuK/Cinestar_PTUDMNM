@@ -125,6 +125,18 @@ class EmployeesController extends Controller
              return redirect()->back()->with('error', 'Đã xảy ra lỗi khi thay đổi mật khẩu. Vui lòng thử lại sau.');
          }
      }
-     
+     public function destroy($id)
+{
+    $user = User::find($id);
+
+    if (!$user) {
+        return redirect()->back()->with('error', 'Không tìm thấy nhân viên.');
+    }
+    DB::table('nhanvien_chucnang')->where('maNV', $id)->delete();
+
+    $user->delete();
+
+    return redirect()->back()->with('success', 'Xóa nhân viên thành công.');
+}
      
 }

@@ -43,10 +43,27 @@
         <div class="movies-controls">
 
             <div class="movies-action-buttons">
-                <a href="{{ route('quanlyphim.create') }}" class="movies-btn movies-add">Add New</a>
+                <a href="{{ route('quanlyphim.create') }}" class="movies-btn movies-add">Thêm phim</a>
             </div>
         </div>
+        @if(session('success'))
+        <div class="alert alert-success" style="background-color: white; ">
+            {{ session('success') }}
+        </div>
+        @endif
 
+        @if(session('error'))
+        <div class="alert alert-danger" style="background-color: white;">
+            {{ session('error') }}
+        </div>
+        @endif
+        @if ($errors->has('new_password'))
+        <div class="alert alert-danger" style="background-color: white; ">
+            <ul>
+                <li>{{ $errors->first('new_password') }}</li>
+            </ul>
+        </div>
+        @endif
         <table id="movies-table" class="table table-striped table-bordered bg-white text-dark"
             style="background-color:white;">
             <thead>

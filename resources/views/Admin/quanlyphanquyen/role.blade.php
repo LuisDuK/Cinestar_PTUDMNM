@@ -38,14 +38,21 @@
     <div class="movies-container" style="height:auto;">
         <h1 class="movies-title" style="text-align: center;">Quản lý phân quyền theo chức năng</h1>
         @if(session('success'))
-        <div class="alert alert-success">
+        <div class="alert alert-success" style="background-color: white; ">
             {{ session('success') }}
         </div>
         @endif
 
         @if(session('error'))
-        <div class="alert alert-danger">
+        <div class="alert alert-danger" style="background-color: white;">
             {{ session('error') }}
+        </div>
+        @endif
+        @if ($errors->has('new_password'))
+        <div class="alert alert-danger" style="background-color: white; ">
+            <ul>
+                <li>{{ $errors->first('new_password') }}</li>
+            </ul>
         </div>
         @endif
         <div class="row">
