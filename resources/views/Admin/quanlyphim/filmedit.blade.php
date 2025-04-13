@@ -4,12 +4,27 @@
         <div class="add-movie-form-container">
             <h1 STYLE="COLOR:BLUE;">CHỈNH SỬA PHIM</h1>
 
-            @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
+            @if(session('success'))
+            <div class="alert alert-success" style="background-color: white; ">
+                {{ session('success') }}
+            </div>
+            <br>
             @endif
 
-            @if (session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
+            @if(session('error'))
+            <div class="alert alert-danger" style="background-color: white;">
+                {{ session('error') }}
+            </div>
+            <br>
+            @endif
+
+            @if ($errors->has('new_password'))
+            <div class="alert alert-danger" style="background-color: white; ">
+                <ul>
+                    <li>{{ $errors->first('new_password') }}</li>
+                </ul>
+            </div>
+            <br>
             @endif
 
             <form method="POST" action="{{ route('quanlyphim.update', ['id' => $movie->maPhim]) }}"
@@ -22,17 +37,19 @@
                     <input class="movies-input" id="ten-phim" type="text" name="ten-phim" value="{{ $movie->ten }}"
                         required />
                 </div>
-
-                <label for="the-loai">Thể loại:</label>
-                <div class="add-movie-form-group" style="display: grid; grid-template-columns: repeat(4, 1fr);">
-                    @foreach ($genres as $genre)
-                    <div>
-                        <input type="checkbox" name="theLoai[]" value="{{ $genre->maLoaiPhim }}"
-                            {{ in_array($genre->maLoaiPhim, $selectedGenres) ? 'checked' : '' }}>
-                        {{ $genre->tenLoaiPhim }}
+                <div style="margin-left:10px;">
+                    <label for="the-loai" style="font-weight: bold;">Thể loại:</label>
+                    <div class="add-movie-form-group" style="display: grid; grid-template-columns: repeat(4, 1fr);">
+                        @foreach ($genres as $genre)
+                        <div>
+                            <input type="checkbox" name="theLoai[]" value="{{ $genre->maLoaiPhim }}"
+                                {{ in_array($genre->maLoaiPhim, $selectedGenres) ? 'checked' : '' }}>
+                            {{ $genre->tenLoaiPhim }}
+                        </div>
+                        @endforeach
                     </div>
-                    @endforeach
                 </div>
+
 
                 <div class="add-movie-form-group">
                     <label for="thoi-luong">Thời lượng (phút)</label>
@@ -74,7 +91,8 @@
                 <div class="add-movie-form-group">
                     <label for="trang-thai">Trạng thái</label>
                     <select class="movies-input" name="trang-thai">
-                        <option value="Đang chiếu" {{ $movie->trangThai == 'Đang chiếu' ? 'selected' : '' }}>Đang chiếu
+                        <option value="Đang chiếu" {{ $movie->trangThai == 'Đang chiếu' ? 'selected' : '' }}>Đang
+                            chiếu
                         </option>
                         <option value="Sắp chiếu" {{ $movie->trangThai == 'Sắp chiếu' ? 'selected' : '' }}>Sắp chiếu
                         </option>

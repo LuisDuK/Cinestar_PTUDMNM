@@ -128,6 +128,8 @@ Route::get('/admin/quanlynhansu', 'App\Http\Controllers\Admin\EmployeesControlle
 Route::POST('/admin/quanlynhansu/save', 'App\Http\Controllers\Admin\EmployeesController@store')->middleware(['admin', 'check.permission:7'])->name('quanlynhansu.save');
 Route::POST('/admin/quanlynhansu/change-password/{id}', 'App\Http\Controllers\Admin\EmployeesController@changePassword')->middleware(['admin', 'check.permission:7'])->name('quanlynhansu.change-password');
 Route::POST('/admin/quanlynhansu/update/{id}', 'App\Http\Controllers\Admin\EmployeesController@update')->middleware(['admin', 'check.permission:7'])->name('quanlynhansu.update');
+Route::delete('/admin/quanlynhansu/delete/{id}', 'App\Http\Controllers\Admin\EmployeesController@destroy')->middleware(['admin', 'check.permission:7'])->name('quanlynhansu.destroy');
+
 
 Route::get('/admin/profile', 'App\Http\Controllers\Admin\ProfileController@viewProfile')->middleware(['admin'])->name('admin.profile');
 Route::post('/admin/profile/updateavatar/{id}', 'App\Http\Controllers\Admin\ProfileController@updateAvatar')->middleware(['admin'])->name('profile.updateAvatar');

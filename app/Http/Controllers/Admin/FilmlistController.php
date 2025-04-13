@@ -168,6 +168,13 @@ public function update(Request $request, $id)
             'trangThai' => $request->input('trang-thai'),
             'trailer' => $request->input('trailer'),
         ];
+        $trailer = $request->input('trailer');
+        if (!empty($trailer) && strpos($trailer, 'youtube.com') !== false) {
+            $trailer = str_replace('watch?v=', 'embed/', $trailer);
+        } else {
+            $trailer = '';
+        }
+        $data['trailer'] = $trailer;
         if ($request->hasFile('image-upload')) {
             $file = $request->file('image-upload');
             $fileName = time() . '_' . $file->getClientOriginalName();

@@ -12,14 +12,21 @@
             <!-- Thông tin nhân viên (Bên trái) -->
             <div class="employee-info" style="width: 60%; margin-left:20px;">
                 @if(session('success'))
-                <div class="alert alert-success">
+                <div class="alert alert-success" style="background-color: white; ">
                     {{ session('success') }}
                 </div>
                 @endif
 
                 @if(session('error'))
-                <div class="alert alert-danger">
+                <div class="alert alert-danger" style="background-color: white;">
                     {{ session('error') }}
+                </div>
+                @endif
+                @if ($errors->has('new_password'))
+                <div class="alert alert-danger" style="background-color: white; ">
+                    <ul>
+                        <li>{{ $errors->first('new_password') }}</li>
+                    </ul>
                 </div>
                 @endif
                 <!-- Thông tin nhân viên -->
