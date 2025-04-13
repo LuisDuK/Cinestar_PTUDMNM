@@ -61,38 +61,16 @@ class HomeController extends Controller
         if (!$maPhim || !$ngayChieu) {
             return response()->json([]);
         }
-
-        // Truy vấn danh sách suất chiếu từ bảng `lichchieuphim`
+    
+        // Truy vấn luôn mã lịch chiếu phim
         $suatChieu = DB::table('lichchieuphim')
             ->where('maPhim', $maPhim)
             ->where('ngayChieu', $ngayChieu)
             ->whereRaw("CONCAT(ngayChieu, ' ', suatChieu) > NOW()")
-            ->select('suatChieu', 'loaiChieu')
-            ->distinct()
+            ->select('suatChieu', 'loaiChieu', 'maLichChieuPhim')
             ->get();
-
+    
         return response()->json($suatChieu);
-    }
-    public function getMaLichChieuPhim(Request $request)
-    {
-        $maPhim = $request->query('maPhim');
-        $ngayChieu = $request->query('ngayChieu');
-        $gioBatDau = $request->query('gioBatDau');
-      
-        if (!$maPhim || !$ngayChieu || !$gioBatDau) {
-            return response()->json(['error' => 'Thiếu dữ liệu'], 400);
-        }
-    
-        $maLichChieuPhim = DB::table('lichchieuphim')
-            ->where('maPhim', $maPhim)
-            ->where('ngayChieu', $ngayChieu)
-            ->where('suatChieu', $gioBatDau)
-            ->value('maLichChieuPhim');
-    
-        if ($maLichChieuPhim) {
-            return response()->json(['maLichChieuPhim' => $maLichChieuPhim]);
-        } else {
-            return response()->json(['error' => 'Không tìm thấy lịch chiếu'], 404);
-        }
-    }
+    }    
+ 
 }

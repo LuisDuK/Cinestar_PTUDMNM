@@ -5,7 +5,7 @@
             <h1>Dashboard</h1>
 
             <div class="statics">
-                <a class="item" href="{{ route('quanly.nhansu') }}">
+                <a class="item" href="{{ route('quanly.phanquyen.chucnang') }}">
                     <h2>{{ $totalNV }}</h2>
                     <p>Nhân viên</p>
                 </a>
