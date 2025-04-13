@@ -260,8 +260,10 @@
                             '<option value="" disabled selected hidden>Chọn Suất</option>';
                         if (data.length > 0) {
                             data.forEach(suat => {
-                                suatDropdown.innerHTML +=
-                                    `<option value="${suat.suatChieu}">${suat.suatChieu} - ${suat.loaiChieu}</option>`;
+                                suatDropdown.innerHTML += `
+                            <option value="${suat.suatChieu}" data-malichchieu="${suat.maLichChieuPhim}">
+                                ${suat.suatChieu} - ${suat.loaiChieu}
+                            </option>`;
                             });
                             suatDropdown.disabled = false;
                             btnDatNgay.disabled = false;
@@ -278,133 +280,16 @@
 
         // Xử lý khi bấm nút "Đặt Ngay"
         btnDatNgay.addEventListener('click', function() {
-            const maPhim = phimDropdown.value;
-            const ngayChieu = ngayDropdown.value;
-            const suatChieu = suatDropdown.value;
+            const selectedOption = suatDropdown.options[suatDropdown.selectedIndex];
+            const maLichChieuPhim = selectedOption.getAttribute('data-malichchieu');
 
-            if (maPhim && ngayChieu && suatChieu) {
-                fetch(
-                        `/get-ma-lich-chieu-phim?maPhim=${maPhim}&ngayChieu=${ngayChieu}&gioBatDau=${suatChieu}`
-                    )
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.maLichChieuPhim) {
-                            // Chuyển hướng đến route Laravel thay vì index.php
-                            window.location.href = `/dat-ghe/${data.maLichChieuPhim}`;
-                        } else {
-                            alert(data.error || 'Không thể tìm thấy lịch chiếu.');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Lỗi khi gọi API lấy maLichChieuPhim:', error);
-                        alert('Có lỗi xảy ra khi xử lý. Vui lòng thử lại sau.');
-                    });
+            if (maLichChieuPhim) {
+                window.location.href = `/dat-ghe/${maLichChieuPhim}`;
             } else {
-                alert('Vui lòng chọn đầy đủ thông tin trước khi đặt vé.');
+                alert('Không tìm thấy mã lịch chiếu phù hợp.');
             }
         });
+
     });
-
-    /*   document.addEventListener("DOMContentLoaded", function() {
-           console.log("DOM fully loaded and parsed.");
-
-           // Lấy danh sách ngày chiếu khi chọn phim
-           document.getElementById('phim-dropdown').addEventListener('change', function() {
-               const maPhim = this.value;
-               console.log(`Phim được chọn: ${maPhim}`);
-               if (maPhim) {
-                   fetch(`/get-ngay-chieu/${maPhim}`)
-                       .then(response => response.json())
-                       .then(data => {
-                           console.log("Dữ liệu ngày chiếu nhận được:", data);
-                           const ngayDropdown = document.getElementById('ngay-dropdown');
-                           ngayDropdown.innerHTML =
-                               '<option value="" disabled selected hidden>2. Chọn Ngày</option>';
-
-                           if (data.length > 0) {
-                               data.forEach(ngay => {
-                                   ngayDropdown.innerHTML +=
-                                       `<option value="${ngay}">${ngay}</option>`;
-                               });
-                               ngayDropdown.disabled = false;
-                           } else {
-                               ngayDropdown.innerHTML +=
-                                   '<option value="">Không có ngày chiếu</option>';
-                               ngayDropdown.disabled = true;
-                           }
-                       })
-                       .catch(error => console.error('Lỗi khi lấy ngày chiếu:', error));
-               }
-           });
-           document.getElementById('ngay-dropdown').addEventListener('change', function() {
-               const maPhim = document.getElementById('phim-dropdown').value;
-               const ngayChieu = this.value;
-               console.log(`Ngày được chọn: ${ngayChieu} cho phim: ${maPhim}`);
-
-               if (maPhim && ngayChieu) {
-                   fetch(`/get-suat-chieu/${maPhim}/${ngayChieu}`)
-                       .then(response => response.json())
-                       .then(data => {
-                           console.log("Dữ liệu suất chiếu nhận được:", data);
-                           const suatDropdown = document.getElementById('suat-dropdown');
-                           suatDropdown.innerHTML =
-                               '<option value="" disabled selected hidden>3. Chọn Suất</option>';
-
-                           if (data.length > 0) {
-                               data.forEach(suat => {
-                                   suatDropdown.innerHTML +=
-                                       `<option value="${suat}">${suat}</option>`;
-                               });
-                               suatDropdown.disabled = false;
-                               document.getElementById('btn-dat-ngay').disabled = false;
-                           } else {
-                               suatDropdown.innerHTML +=
-                                   '<option value="">Không có suất chiếu</option>';
-                               suatDropdown.disabled = true;
-                               document.getElementById('btn-dat-ngay').disabled = true;
-                           }
-                       })
-                       .catch(error => console.error('Lỗi khi lấy suất chiếu:', error));
-               }
-           });
-           document.getElementById('btn-dat-ngay').addEventListener('click', function() {
-               const maPhim = document.getElementById('phim-dropdown').value;
-               const ngayChieu = document.getElementById('ngay-dropdown').value;
-               const suatChieu = document.getElementById('suat-dropdown').value;
-
-               console.log(`Đặt vé: Phim ${maPhim}, Ngày ${ngayChieu}, Suất ${suatChieu}`);
-
-               if (maPhim && ngayChieu && suatChieu) {
-                   fetch(`/get-ma-lich-chieu-phim/${maPhim}/${ngayChieu}/${suatChieu}`)
-                       .then(response => response.json())
-                       .then(data => {
-                           if (data.maLichChieuPhim) {
-                               console.log("maLichChieuPhim nhận được:", data.maLichChieuPhim);
-                               // Chuyển hướng đến trang đặt ghế
-                               window.location.href =
-                                   `index.php?action=datghe&maLichChieuPhim=${data.maLichChieuPhim}`;
-                           } else {
-                               alert(data.error || 'Không thể tìm thấy lịch chiếu.');
-                           }
-                       })
-                       .catch(error => {
-                           console.error('Lỗi khi gọi API lấy maLichChieuPhim:', error);
-                           alert('Có lỗi xảy ra khi xử lý. Vui lòng thử lại sau.');
-                       });
-               }
-           });
-       });
-
-       function scrollToMain() {
-           const section = document.getElementById("quick-booking");
-           if (section) {
-               console.log("Found the section:", section);
-               section.scrollIntoView({
-                   behavior: "smooth"
-               });
-           } else {
-               console.error("Section with ID 'quick-booking' not found.");
-           }
-       }*/
     </script>
 </x-index-guest>

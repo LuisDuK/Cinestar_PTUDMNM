@@ -39,8 +39,6 @@ Route::get('/dat-ghe/{maLichChieuPhim}', 'App\Http\Controllers\Guest\Bookingtick
 /*Ham sử dụng*/
 Route::get('/get-ngay-chieu/{maPhim}', 'App\Http\Controllers\Guest\HomeController@getNgayChieu');
 Route::get('/get-suat-chieu/{maPhim}/{ngayChieu}', 'App\Http\Controllers\Guest\HomeController@getSuatChieu');
-Route::get('/get-ma-lich-chieu-phim','App\Http\Controllers\Guest\HomeController@getMaLichChieuPhim');
-
 
 Route::get('/get-booked-seats', 'App\Http\Controllers\Guest\BookingTicketController@getBookedSeats')->name('bookedseats');
 Route::POST('/update-cart', 'App\Http\Controllers\Guest\BookingTicketController@updatecart')->name('update.cart');

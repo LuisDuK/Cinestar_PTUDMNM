@@ -126,7 +126,8 @@ public function showFormEdit($maLichChieu)
    
     $schedule = DB::table('lichchieuphim')->where('maLichChieuPhim', $maLichChieu)->first();
     $ngayChieu = $schedule->ngayChieu;
-    $gioChieu =  $schedule->suatChieu;
+    $gioChieu = substr($schedule->suatChieu, 0, 5);
+    
     $ngayBatDau = now()->addDays(7)->format('Y-m-d');
     $ngayKetThuc = now()->addDays(14)->format('Y-m-d'); 
     
