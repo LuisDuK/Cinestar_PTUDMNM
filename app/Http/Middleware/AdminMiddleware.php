@@ -20,9 +20,11 @@ class AdminMiddleware
         //dd(Auth::check(), Auth::user(), session()->all()); 
        // dd(Auth::check(), Auth::user());
         // Kiểm tra nếu chưa đăng nhập
-        if (!Auth::check() || Auth::user()->role != 1) {
+        if (!Auth::check() || Auth::user()->role != 1 || Auth::user()->status == 0) {
             Auth::logout();
-            return redirect('/admin/login');
+            session()->flash('success', 'Bạn đã bị đăng xuất do không có quyền truy cập hoặc tài khoản bị khóa.');
+    return redirect('/admin/login');
+
         }
 
         return $next($request);
